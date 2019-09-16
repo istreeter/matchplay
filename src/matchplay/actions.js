@@ -1,5 +1,6 @@
 // @flow
 import type {Player} from './model';
+import type {Dispatch as ReduxDispatch} from 'redux';
 
 // Results from middleware
 
@@ -35,3 +36,5 @@ export type Action =
   | PlayerAdd
   | PlayerFetchAll
   | GameAdd
+
+export type Dispatch = ReduxDispatch<Action>;

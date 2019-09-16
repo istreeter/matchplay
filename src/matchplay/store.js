@@ -1,29 +1,13 @@
 // @flow
-import type {Reducer, Dispatch} from 'redux';
-import { createStore } from 'redux';
-import { persistReducer, persistStore } from 'redux-persist';
-import hardSet from 'redux-persist/lib/stateReconciler/hardSet';
-import localforage from 'localforage';
+import type {Dispatch} from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 
-type OnlyAction =
-  {| +type: 'ONLY_ACTION' |}
+import {reducer, defaultState, type State} from './reducers';
+import type {Action} from './actions';
+import {dbMiddleware} from './indexeddb';
 
-const onlyAction = () : OnlyAction => ({type: 'ONLY_ACTION'});
+const store = createStore<State, Action, Dispatch<Action>>(reducer, defaultState, applyMiddleware(dbMiddleware));
 
-type State =
-  {| something: number |};
+store.dispatch({type: 'INIT'});
 
-const reducer : Reducer<State, OnlyAction> =
-  (previousState, action) =>
-    previousState === undefined ? {something : 1} : previousState;
-
-const persistConfig = {
-    key : 'root',
-    storage : localforage,
-    reconciler : hardSet,
-  }
-
-const persistedReducer : Reducer<State, OnlyAction> = persistReducer(persistConfig, reducer);
-
-export const store = createStore<State, OnlyAction, Dispatch<OnlyAction>>(persistedReducer);
-export const persistor = persistStore(store);
+export default store;

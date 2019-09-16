@@ -20,17 +20,18 @@ export const dbMiddleware : Middleware<State, Action, Dispatch<Action>> =
     switch (action.type) {
 
       case 'PLAYER_FETCH_ALL':
-        const players = {};
+        const state = store.getState();
+        if (state.isFetchingPlayers || state.hasFetchedPlayers) {
+          // Drop this action
+          return action;
+        }
         dbPromise.then(db => {
           const tx = db.transaction('player', 'readonly');
           const os = tx.objectStore('player');
-          return os.openCursor();
-        }).then(function handleCursor(cursor) {
-          players[cursor.primaryKey.toString()] = cursor.value;
-          return cursor.continue().then(handleCursor)
+          return os.getAll();
         }).then(players =>
           store.dispatch({
-            type: 'PLAYER_MERGE_IN',
+            type: 'PLAYERS_FETCHED',
             players,
           })
         );
@@ -39,6 +40,7 @@ export const dbMiddleware : Middleware<State, Action, Dispatch<Action>> =
 
       case 'PLAYER_ADD':
         const player : Player = {
+          id: Date.now(),
           name: action.name,
           color: action.color,
           played: 0,
@@ -46,15 +48,14 @@ export const dbMiddleware : Middleware<State, Action, Dispatch<Action>> =
           precedence: new Date(),
         };
         dbPromise.then(db => {
-          const tx = db.transaction('player', 'readonly');
+          const tx = db.transaction('player', 'readwrite');
           const os = tx.objectStore('player');
-          return os.add(player)
+          os.add(player)
+          return tx.complete
         }).then(result =>
           store.dispatch({
-            type: 'PLAYER_MERGE_IN',
-            players: {
-              [result.toString()]: player,
-            }
+            type: 'PLAYER_ADDED',
+            player: player,
           })
         )
         break;

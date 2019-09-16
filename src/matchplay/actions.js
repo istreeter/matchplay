@@ -3,11 +3,14 @@ import type {Player} from './model';
 
 // Results from middleware
 
-type PlayerMergeIn = {|
-  type: 'PLAYER_MERGE_IN',
-  players: {
-    [string] : Player | void,
-  }
+type PlayersFetched = {|
+  type: 'PLAYERS_FETCHED',
+  players: $ReadOnlyArray<Player>,
+|};
+
+type PlayerAdded = {|
+  type: 'PLAYER_ADDED',
+  player: Player,
 |};
 
 // Instructions to middleware:
@@ -27,7 +30,8 @@ type GameAdd = {|
 |};
 
 export type Action =
-  | PlayerMergeIn
+  | PlayersFetched
+  | PlayerAdded
   | PlayerAdd
   | PlayerFetchAll
   | GameAdd

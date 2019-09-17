@@ -19,9 +19,9 @@ export const dbMiddleware : Middleware<State, Action, Dispatch<Action>> =
   store => next => action => {
     switch (action.type) {
 
-      case 'PLAYER_FETCH_ALL':
+      case 'PLAYERS_INIT':
         const state = store.getState();
-        if (state.isFetchingPlayers || state.hasFetchedPlayers) {
+        if (state.page.type === 'PLAYERS') {
           // Drop this action
           return action;
         }
@@ -38,7 +38,7 @@ export const dbMiddleware : Middleware<State, Action, Dispatch<Action>> =
         break;
 
 
-      case 'PLAYER_ADD':
+      case 'PLAYERS_ADD':
         const player : Player = {
           id: Date.now(),
           name: action.name,
@@ -54,7 +54,7 @@ export const dbMiddleware : Middleware<State, Action, Dispatch<Action>> =
           return tx.complete
         }).then(result =>
           store.dispatch({
-            type: 'PLAYER_ADDED',
+            type: 'PLAYERS_ADDED',
             player: player,
           })
         )

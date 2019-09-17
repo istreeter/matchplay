@@ -4,62 +4,61 @@ import type {Reducer} from 'redux';
 import type {Game, Player} from './model';
 import type {Action} from './actions';
 
+type PlayersPageModel = {|
+    +type: 'PLAYERS',
+    +players?: $ReadOnlyArray<Player>,
+  |};
+
+type PageModel =
+  | {type: 'LANDING'}
+  | PlayersPageModel;
+
 export type State = {|
-  +currentGame?: Game,
-  +players: {
-    [string] : Player | void,
-  },
-  +isFetchingPlayers: boolean,
-  +hasFetchedPlayers: boolean,
+  +page: PageModel,
 |};
 
 export const defaultState : State = {
-  currentGame: undefined,
-  players: {},
-  isFetchingPlayers: false,
-  hasFetchedPlayers: false,
+  page: {type: 'LANDING'},
 };
+
+const handlePlayersPage = (state : PlayersPageModel, action : Action) : PlayersPageModel => {
+  switch (action.type) {
+    case 'PLAYERS_FETCHED':
+      return {
+          ...state,
+          players: action.players,
+        };
+
+    case 'PLAYERS_ADDED':
+      const players = state.players === undefined ? [action.player] : [action.player, ...state.players];
+      return {
+        ...state,
+        players
+        };
+    default:
+      return state;
+  }
+}
 
 export const reducer : Reducer<State, Action> =
   (previousState? : State, action : Action) => {
     const state = previousState === undefined ? defaultState : previousState;
+
     switch (action.type) {
-
-
-      case 'PLAYERS_FETCHED':
+      case 'PLAYERS_INIT':
         return {
           ...state,
-          players : action.players.reduce((players, player) => {
-            players[player.id.toString()] = player;
-            return players;
-          }, {}),
-          isFetchingPlayers: false,
-          hasFetchedPlayers: true,
+          page: { type: 'PLAYERS', players: undefined },
         }
-
-      case 'PLAYER_ADDED':
-        return {
-          ...state,
-          players : {
-            ...state.players,
-            [action.player.id.toString()]: action.player,
-          },
-        }
-
-      case 'PLAYER_FETCH_ALL':
-        return {
-          ...state,
-          isFetchingPlayers: true,
-          hasFetchedPlayers: false,
-        }
-
-      // These actions are handled by middleware; they do not affect state.
-      case 'GAME_ADD':
-        return state;
-      case 'PLAYER_ADD':
-        return state;
-
-      default:
-        return state;
     }
+
+    if (state.page.type === 'PLAYERS') {
+      return {
+        ...state,
+        page: handlePlayersPage(state.page, action),
+      }
+    }
+
+    return state;
+
   }

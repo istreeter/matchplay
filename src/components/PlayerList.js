@@ -4,19 +4,19 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import type {Player} from 'matchplay/model';
-import {playerFetchAll} from 'matchplay/action-creators';
+import {playersInit} from 'matchplay/action-creators';
 import type {State} from 'matchplay/reducers';
 import type {Dispatch} from 'matchplay/actions';
 
 type StateProps = {|
-  players: $ReadOnlyArray<Player>,
+  players?: $ReadOnlyArray<Player>,
 |}
 
 type OwnProps = {|
 |}
 
 type DispatchProps = {|
-  fetchAll: () => mixed,
+  playersInit: () => mixed,
 |}
 
 type AllProps = {|
@@ -28,7 +28,7 @@ type AllProps = {|
 class PlayerList extends React.PureComponent<AllProps> {
 
   compnentDidMount() {
-    this.props.fetchAll();
+    this.props.playersInit();
   }
 
   render() {
@@ -37,17 +37,11 @@ class PlayerList extends React.PureComponent<AllProps> {
 }
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  fetchAll: () => dispatch(playerFetchAll()),
+  playersInit: () => dispatch(playersInit()),
 })
 
 const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({
-  players: Object.keys(state.players).reduce((players, key) => {
-    const p = state.players[key];
-    if (p !== undefined) {
-      players.push(p);
-    }
-    return players;
-  }, []),
+  players: state.page.type === 'PLAYERS' ? state.page.players : undefined,
 });
 
 connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);

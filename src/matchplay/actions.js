@@ -9,21 +9,21 @@ type PlayersFetched = {|
   players: $ReadOnlyArray<Player>,
 |};
 
-type PlayerAdded = {|
-  type: 'PLAYER_ADDED',
+type PlayersAdded = {|
+  type: 'PLAYERS_ADDED',
   player: Player,
 |};
 
 // Instructions to middleware:
 
-type PlayerAdd = {|
-  type: 'PLAYER_ADD',
+type PlayersAdd = {|
+  type: 'PLAYERS_ADD',
   name: string,
   color: string,
 |};
 
-type PlayerFetchAll = {|
-  type: 'PLAYER_FETCH_ALL',
+type PlayersInit = {|
+  type: 'PLAYERS_INIT',
 |};
 
 type GameAdd = {|
@@ -32,9 +32,9 @@ type GameAdd = {|
 
 export type Action =
   | PlayersFetched
-  | PlayerAdded
-  | PlayerAdd
-  | PlayerFetchAll
+  | PlayersAdded
+  | PlayersAdd
+  | PlayersInit
   | GameAdd
 
 export type Dispatch = ReduxDispatch<Action>;

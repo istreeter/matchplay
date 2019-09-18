@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 
 import type {PageModel, State} from 'matchplay/reducers';
 import PlayerList from './PlayerList';
+import Home from './Home';
 import type {Dispatch} from 'matchplay/actions';
 
 type StateProps = {|
@@ -29,7 +30,7 @@ const Router = (props: AllProps) => {
     case 'PLAYERS':
       return <PlayerList/>;
     default:
-      return <h1>Landing Page</h1>;
+      return <Home/>;
   }
 }
 

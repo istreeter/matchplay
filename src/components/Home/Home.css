@@ -1,0 +1,71 @@
+@import '~matchplay.css';
+
+.container {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: 2fr 1fr [color-change] 1fr 2fr;
+}
+
+.bar1, .bar2 {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.bar1 {
+  grid-row: 1 / color-change;
+  grid-column: 1 / -1;
+  background-color: var(--theme1-color);
+  color: white;
+  font-size: 30px;
+  padding: 10px 10px 10vh;
+}
+
+.bar2 {
+  grid-row: color-change / -1;
+  grid-column: 1 / -1;
+  background-color: var(--theme2-color);
+}
+
+img {
+  grid-row: 2 / 4;
+  grid-column: 1 / -1;
+  height: 100%;
+}
+
+button {
+  font-size: 20px;
+  padding: 10px 20px;
+  color: var(--theme4-color);
+  background-color: white;
+  border-style: none;
+}
+
+@media (orientation: landscape) {
+  .container {
+    grid-template-columns: 2fr 1fr [color-change] 1fr 2fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+
+  .bar1 {
+    grid-row: 1 / -1;
+    grid-column: 1 / color-change;
+    padding: 10px 10px 50vh;
+  }
+
+  .bar2 {
+    grid-row: 1 / -1;
+    grid-column: color-change / -1;
+    padding: 50vh 0 0;
+  }
+
+  img {
+    grid-column: 2 / 4;
+    grid-row: 2 / 3;
+    height: 100%;
+    margin: auto;
+  }
+}

@@ -1,0 +1,22 @@
+@import '~matchplay.css';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  height: 80px;
+  background-color: var(--theme1-color);
+  display: flex;
+  padding: 5px;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.logo {
+  height: 100%
+}

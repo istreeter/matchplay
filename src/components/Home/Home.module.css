@@ -27,21 +27,23 @@
 .bar2 {
   grid-row: color-change / -1;
   grid-column: 1 / -1;
-  background-color: var(--theme2-color);
+  background-color: var(--theme3-color);
 }
 
-img {
+.img {
   grid-row: 2 / 4;
   grid-column: 1 / -1;
   height: 100%;
 }
 
-button {
-  font-size: 20px;
-  padding: 10px 20px;
-  color: var(--theme4-color);
-  background-color: white;
-  border-style: none;
+.button {
+  font-size: 25px;
+  padding: 15px 25px;
+  color: var(--theme1-color);
+  background-color: #eeeeee;
+  border: 3px var(--theme1-color) solid;
+  border-radius: 5px;
+  text-decoration: none;
 }
 
 @media (orientation: landscape) {
@@ -62,7 +64,7 @@ button {
     padding: 50vh 0 0;
   }
 
-  img {
+  .img {
     grid-column: 2 / 4;
     grid-row: 2 / 3;
     height: 100%;

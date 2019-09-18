@@ -4,9 +4,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import type {Player} from 'matchplay/model';
-import {playersAdd} from 'matchplay/action-creators';
+import {playersAdd, playersInit} from 'matchplay/action-creators';
 import type {State} from 'matchplay/reducers';
 import type {Dispatch} from 'matchplay/actions';
+import Base from 'components/Base';
 
 type StateProps = {|
   players?: $ReadOnlyArray<Player>,
@@ -17,6 +18,7 @@ type OwnProps = {|
 
 type DispatchProps = {|
   playersAdd: string => mixed,
+  playersInit: () => mixed,
 |}
 
 type AllProps = {|
@@ -46,6 +48,10 @@ class PlayerList extends React.PureComponent<AllProps, LocalState> {
     }
   }
 
+  componentDidMount() {
+    this.props.playersInit();
+  }
+
   handleAddNew = () =>
     this.setState({showNewPlayer: true})
 
@@ -68,16 +74,18 @@ class PlayerList extends React.PureComponent<AllProps, LocalState> {
     </>
 
   render() {
-    return <>
-        {this.props.players && this.props.players.map(player => <PlayerComponent player={player}/>)}
+    return <Base>
+        {this.props.players && this.props.players.map(player =>
+          <PlayerComponent player={player} key={player.id}/>)}
         <button onClick={this.handleAddNew}>Add player</button>
         {this.state.showNewPlayer ? this.renderNewPlayer() : null}
-      </>;
+      </Base>;
   }
 }
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
   playersAdd: (name) => dispatch(playersAdd(name)),
+  playersInit: () => dispatch(playersInit()),
 })
 
 const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({

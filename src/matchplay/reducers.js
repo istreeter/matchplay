@@ -1,7 +1,7 @@
 // @flow
 import type {Reducer} from 'redux';
 
-import type {Game, Player} from './model';
+import type {Player} from './model';
 import type {Action} from './actions';
 
 type PlayersPageModel = {|
@@ -9,8 +9,8 @@ type PlayersPageModel = {|
     +players?: $ReadOnlyArray<Player>,
   |};
 
-type PageModel =
-  | {type: 'LANDING'}
+export type PageModel =
+  | {type: 'HOME'}
   | PlayersPageModel;
 
 export type State = {|
@@ -18,7 +18,7 @@ export type State = {|
 |};
 
 export const defaultState : State = {
-  page: {type: 'LANDING'},
+  page: {type: 'HOME'},
 };
 
 const handlePlayersPage = (state : PlayersPageModel, action : Action) : PlayersPageModel => {
@@ -26,7 +26,7 @@ const handlePlayersPage = (state : PlayersPageModel, action : Action) : PlayersP
     case 'PLAYERS_FETCHED':
       return {
           ...state,
-          players: action.players,
+          players: [...action.players].sort((a, b) => a.precedence - b.precedence),
         };
 
     case 'PLAYERS_ADDED':
@@ -50,6 +50,12 @@ export const reducer : Reducer<State, Action> =
           ...state,
           page: { type: 'PLAYERS', players: undefined },
         }
+      case 'HOME_INIT':
+        return {
+          ...state,
+          page: { type: 'HOME' },
+        }
+      default:
     }
 
     if (state.page.type === 'PLAYERS') {

@@ -30,11 +30,16 @@ type GameAdd = {|
   type: 'GAME_ADD',
 |};
 
+type HomeInit = {|
+  type: 'HOME_INIT',
+|};
+
 export type Action =
   | PlayersFetched
   | PlayersAdded
   | PlayersAdd
-  | PlayersInit
   | GameAdd
+  | PlayersInit
+  | HomeInit
 
 export type Dispatch = ReduxDispatch<Action>;

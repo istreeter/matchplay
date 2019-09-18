@@ -6,12 +6,14 @@ import type {State} from './reducers';
 import type {Action} from './actions';
 import type {Player} from './model';
 
-const dbPromise = openDB('matchplay', 1, upgradeDB => {
-  if (!upgradeDB.objectStoreNames.contains('player')) {
-    const os = upgradeDB.createObjectStore('player', {autoIncrement: true});
-  }
-  if (!upgradeDB.objectStoreNames.contains('game')) {
-    upgradeDB.createObjectStore('game', {autoIncrement: true});
+const dbPromise = openDB('matchplay', 1, {
+  upgrade(upgradeDB) {
+    if (!upgradeDB.objectStoreNames.contains('player')) {
+      upgradeDB.createObjectStore('player', {autoIncrement: true});
+    }
+    if (!upgradeDB.objectStoreNames.contains('game')) {
+      upgradeDB.createObjectStore('game', {autoIncrement: true});
+    }
   }
 });
 
@@ -59,6 +61,8 @@ export const dbMiddleware : Middleware<State, Action, Dispatch<Action>> =
           })
         )
         break;
+
+      default:
 
     }
     return next(action);

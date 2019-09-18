@@ -4,7 +4,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import type {Player} from 'matchplay/model';
-import {playersInit} from 'matchplay/action-creators';
+import {playersAdd} from 'matchplay/action-creators';
 import type {State} from 'matchplay/reducers';
 import type {Dispatch} from 'matchplay/actions';
 
@@ -16,7 +16,7 @@ type OwnProps = {|
 |}
 
 type DispatchProps = {|
-  playersInit: () => mixed,
+  playersAdd: string => mixed,
 |}
 
 type AllProps = {|
@@ -25,23 +25,63 @@ type AllProps = {|
   ...DispatchProps,
 |}
 
-class PlayerList extends React.PureComponent<AllProps> {
+type LocalState = {|
+  showNewPlayer: boolean,
+  newPlayerName: string,
+|}
 
-  compnentDidMount() {
-    this.props.playersInit();
+const PlayerComponent = ({player}) =>
+  <div>
+    <span style={{color: player.color}}>{player.name} </span>
+    won {player.won}, played {player.played}
+  </div>
+
+class PlayerList extends React.PureComponent<AllProps, LocalState> {
+
+  constructor(props: AllProps) {
+    super(props);
+    this.state = {
+      showNewPlayer: false,
+      newPlayerName: "",
+    }
   }
 
+  handleAddNew = () =>
+    this.setState({showNewPlayer: true})
+
+  handleDismiss = () =>
+    this.setState({showNewPlayer: false})
+
+  handleSubmit = () => {
+    this.props.playersAdd(this.state.newPlayerName);
+    this.handleDismiss();
+  }
+
+  handleNameChange = (event : SyntheticInputEvent<>) =>
+    this.setState({newPlayerName: event.target.value})
+
+  renderNewPlayer = () =>
+    <>
+      <input value={this.state.newPlayerName} onChange={this.handleNameChange}/>
+      <button onClick={this.handleSubmit}>submit</button>
+      <button onClick={this.handleDismiss}>cancel</button>
+    </>
+
   render() {
-    return null;
+    return <>
+        {this.props.players && this.props.players.map(player => <PlayerComponent player={player}/>)}
+        <button onClick={this.handleAddNew}>Add player</button>
+        {this.state.showNewPlayer ? this.renderNewPlayer() : null}
+      </>;
   }
 }
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  playersInit: () => dispatch(playersInit()),
+  playersAdd: (name) => dispatch(playersAdd(name)),
 })
 
 const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({
   players: state.page.type === 'PLAYERS' ? state.page.players : undefined,
 });
 
-connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);
+export default connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);

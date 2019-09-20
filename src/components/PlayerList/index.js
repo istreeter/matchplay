@@ -3,7 +3,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPlus } from '@fortawesome/free-solid-svg-icons';
 import {Link} from 'react-router-dom';
 
 import type {Player} from 'matchplay/model';
@@ -48,14 +48,13 @@ class PlayerList extends React.PureComponent<AllProps> {
 
   render() {
     return <Base>
-      <div className={styles.container}>
-        <div className={styles.player_list_container}>
-          {this.props.players && this.props.players.map(player =>
-            <PlayerComponent player={player} key={player.id}/>)}
-        </div>
-        <div className={styles.buttons}>
-          <Link className={styles.link} to="/players/add/">Add player</Link>
-        </div>
+      <div className={styles.player_list_container}>
+        <Link className={styles.link_add} to="/players/add/">
+          <FontAwesomeIcon className={styles.icon_add} icon={faPlus} size="4x"/>
+          <div>New player</div>
+        </Link>
+        {this.props.players && this.props.players.map(player =>
+          <PlayerComponent player={player} key={player.id}/>)}
       </div>
     </Base>;
   }

@@ -26,7 +26,7 @@ const handlePlayersPage = (state : PlayersPageModel, action : Action) : PlayersP
     case 'PLAYERS_FETCHED':
       return {
           ...state,
-          players: [...action.players].sort((a, b) => a.precedence - b.precedence),
+          players: [...action.players].sort((a, b) => b.precedence - a.precedence),
         };
 
     case 'PLAYERS_ADDED':

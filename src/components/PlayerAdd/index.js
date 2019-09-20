@@ -8,6 +8,7 @@ import {playersAdd} from 'matchplay/action-creators';
 import type {State} from 'matchplay/reducers';
 import type {Dispatch} from 'matchplay/actions';
 import Base from 'components/Base';
+import styles from "./PlayerAdd.module.css";
 
 type StateProps = {|
   xxx: void,
@@ -46,8 +47,10 @@ class PlayerAdd extends React.PureComponent<AllProps, LocalState> {
 
   render() {
     return <Base>
-      <input value={this.state.newPlayerName} onChange={this.handleNameChange}/>
-      <button onClick={this.handleSubmit}>submit</button>
+      <div className={styles.container}>
+        <input value={this.state.newPlayerName} onChange={this.handleNameChange}/>
+        <button onClick={this.handleSubmit}>Add</button>
+      </div>
     </Base>
   }
 

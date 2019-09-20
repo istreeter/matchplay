@@ -2,12 +2,15 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import type {Player} from 'matchplay/model';
 import {playersAdd, playersInit} from 'matchplay/action-creators';
 import type {State} from 'matchplay/reducers';
 import type {Dispatch} from 'matchplay/actions';
 import Base from 'components/Base';
+import styles from './PlayerList.module.css';
 
 type StateProps = {|
   players?: $ReadOnlyArray<Player>,
@@ -33,9 +36,12 @@ type LocalState = {|
 |}
 
 const PlayerComponent = ({player}) =>
-  <div>
-    <span style={{color: player.color}}>{player.name} </span>
-    won {player.won}, played {player.played}
+  <div className={styles.player_grid_item}>
+    <div>
+      <FontAwesomeIcon style={{color: player.color}} icon={faUser} size="4x"/>
+    </div>
+    <div>{player.name} </div>
+    <div className={styles.player_stats}>won {player.won}, played {player.played}</div>
   </div>
 
 class PlayerList extends React.PureComponent<AllProps, LocalState> {
@@ -75,11 +81,13 @@ class PlayerList extends React.PureComponent<AllProps, LocalState> {
 
   render() {
     return <Base>
+      <div className={styles.player_list_container}>
         {this.props.players && this.props.players.map(player =>
           <PlayerComponent player={player} key={player.id}/>)}
-        <button onClick={this.handleAddNew}>Add player</button>
-        {this.state.showNewPlayer ? this.renderNewPlayer() : null}
-      </Base>;
+      </div>
+      <button onClick={this.handleAddNew}>Add player</button>
+      {this.state.showNewPlayer ? this.renderNewPlayer() : null}
+    </Base>;
   }
 }
 

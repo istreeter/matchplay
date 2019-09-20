@@ -4,3 +4,7 @@
   --theme3-color: #A2C523;
   --theme4-color: #7D4427;
 }
+
+* {
+  box-sizing: border-box;
+}

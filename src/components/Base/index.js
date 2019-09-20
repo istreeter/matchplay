@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import {Link} from 'react-router-dom';
 
 import styles from "./Base.module.css"
@@ -15,6 +15,9 @@ export default (props: Props ) =>
     <header className={styles.header}>
       <Link to="/">
         <img className={styles.logo} src={logo} alt="logo" />
+      </Link>
+      <Link className={styles.link} to="/players/">
+        Players
       </Link>
     </header>
     <div className={styles.content}>

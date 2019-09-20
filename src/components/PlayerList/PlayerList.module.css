@@ -1,6 +1,15 @@
 @import '~matchplay.css';
 
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 .player_list_container {
+  flex-grow: 1;
+  overflow: auto;
   --item-width: 200px;
   display: grid;
   grid-template-columns: repeat(2, var(--item-width));
@@ -25,3 +34,18 @@
   margin-top: 5px;
 }
 
+.buttons {
+  height: 60px;
+  flex: 0 0 auto;
+  background-color: var(--theme2-color);
+  display: flex;
+}
+
+.buttons button {
+  background-color: transparent;
+  border: 0 none;
+  color: white;
+  font-size: 20px;
+  padding: 0 10px;
+  cursor: pointer;
+}

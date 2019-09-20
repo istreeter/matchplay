@@ -81,12 +81,16 @@ class PlayerList extends React.PureComponent<AllProps, LocalState> {
 
   render() {
     return <Base>
-      <div className={styles.player_list_container}>
-        {this.props.players && this.props.players.map(player =>
-          <PlayerComponent player={player} key={player.id}/>)}
+      <div className={styles.container}>
+        <div className={styles.player_list_container}>
+          {this.props.players && this.props.players.map(player =>
+            <PlayerComponent player={player} key={player.id}/>)}
+        </div>
+        <div className={styles.buttons}>
+          <button onClick={this.handleAddNew}>Add player</button>
+          {this.state.showNewPlayer ? this.renderNewPlayer() : null}
+        </div>
       </div>
-      <button onClick={this.handleAddNew}>Add player</button>
-      {this.state.showNewPlayer ? this.renderNewPlayer() : null}
     </Base>;
   }
 }

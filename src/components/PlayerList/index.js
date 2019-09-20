@@ -4,6 +4,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import {Link} from 'react-router-dom';
 
 import type {Player} from 'matchplay/model';
 import {playersAdd, playersInit} from 'matchplay/action-creators';
@@ -30,11 +31,6 @@ type AllProps = {|
   ...DispatchProps,
 |}
 
-type LocalState = {|
-  showNewPlayer: boolean,
-  newPlayerName: string,
-|}
-
 const PlayerComponent = ({player}) =>
   <div className={styles.player_grid_item}>
     <div>
@@ -44,40 +40,11 @@ const PlayerComponent = ({player}) =>
     <div className={styles.player_stats}>won {player.won}, played {player.played}</div>
   </div>
 
-class PlayerList extends React.PureComponent<AllProps, LocalState> {
-
-  constructor(props: AllProps) {
-    super(props);
-    this.state = {
-      showNewPlayer: false,
-      newPlayerName: "",
-    }
-  }
+class PlayerList extends React.PureComponent<AllProps> {
 
   componentDidMount() {
     this.props.playersInit();
   }
-
-  handleAddNew = () =>
-    this.setState({showNewPlayer: true})
-
-  handleDismiss = () =>
-    this.setState({showNewPlayer: false})
-
-  handleSubmit = () => {
-    this.props.playersAdd(this.state.newPlayerName);
-    this.handleDismiss();
-  }
-
-  handleNameChange = (event : SyntheticInputEvent<>) =>
-    this.setState({newPlayerName: event.target.value})
-
-  renderNewPlayer = () =>
-    <>
-      <input value={this.state.newPlayerName} onChange={this.handleNameChange}/>
-      <button onClick={this.handleSubmit}>submit</button>
-      <button onClick={this.handleDismiss}>cancel</button>
-    </>
 
   render() {
     return <Base>
@@ -87,8 +54,7 @@ class PlayerList extends React.PureComponent<AllProps, LocalState> {
             <PlayerComponent player={player} key={player.id}/>)}
         </div>
         <div className={styles.buttons}>
-          <button onClick={this.handleAddNew}>Add player</button>
-          {this.state.showNewPlayer ? this.renderNewPlayer() : null}
+          <Link className={styles.link} to="/players/add/">Add player</Link>
         </div>
       </div>
     </Base>;

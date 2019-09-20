@@ -31,19 +31,45 @@ type AllProps = {|
   ...DispatchProps,
 |}
 
-const PlayerComponent = ({player}) =>
-  <div className={styles.player_grid_item}>
-    <div>
-      <FontAwesomeIcon style={{color: player.color}} icon={faUser} size="4x"/>
-    </div>
-    <div>{player.name} </div>
-    <div className={styles.player_stats}>won {player.won}, played {player.played}</div>
-  </div>
 
-class PlayerList extends React.PureComponent<AllProps> {
+type LocalState = {|
+  selected: $ReadOnlyArray<number>,
+|};
+
+class PlayerList extends React.PureComponent<AllProps, LocalState> {
+
+  constructor(props: AllProps) {
+    super(props);
+    this.state = {
+      selected: [],
+    };
+  }
 
   componentDidMount() {
     this.props.playersInit();
+  }
+
+  handlePlayerSelect = (i: number) => {
+    const {selected} = this.state;
+    const newSelected =
+      selected.indexOf(i) === -1 ?
+        [i, ...selected]
+      : selected.filter(j => i !== j);
+    this.setState({selected: newSelected});
+  };
+
+  renderPlayer = (player: Player, index: number) => {
+    const iconClassName = this.state.selected.indexOf(index) >= 0 ?
+        styles.selected : styles.unselected;
+    return <div className={styles.player_grid_item}
+                key={player.id}
+                onClick={() => this.handlePlayerSelect(index)}>
+      <div style={{color: player.color}}>
+        <FontAwesomeIcon className={iconClassName} icon={faUser} size="4x"/>
+      </div>
+      <div>{player.name} </div>
+      <div className={styles.player_stats}>won {player.won}, played {player.played}</div>
+    </div>
   }
 
   render() {
@@ -53,8 +79,7 @@ class PlayerList extends React.PureComponent<AllProps> {
           <FontAwesomeIcon className={styles.icon_add} icon={faPlus} size="4x"/>
           <div>New player</div>
         </Link>
-        {this.props.players && this.props.players.map(player =>
-          <PlayerComponent player={player} key={player.id}/>)}
+        {this.props.players && this.props.players.map(this.renderPlayer)}
       </div>
     </Base>;
   }

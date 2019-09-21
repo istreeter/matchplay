@@ -1,8 +1,17 @@
 // @flow
+import type {Dispatch as ReduxDispatch, Middleware} from 'redux';
+
 import type {Player} from './model';
-import type {Dispatch as ReduxDispatch} from 'redux';
+import type {State} from './state';
+
 
 // Results from middleware
+
+type MiddlewareAdd = {|
+  type: 'MIDDLEWARE_ADD',
+  name: string,
+  middleware: Middleware<State, Action, Dispatch>,
+|};
 
 type PlayersFetched = {|
   type: 'PLAYERS_FETCHED',
@@ -35,6 +44,7 @@ type HomeInit = {|
 |};
 
 export type Action =
+  | MiddlewareAdd
   | PlayersFetched
   | PlayersAdded
   | PlayersAdd

@@ -8,8 +8,8 @@ import {Route, Switch, Link, Redirect} from 'react-router-dom';
 import {withRouter, type ContextRouter} from 'react-router';
 
 import type {Player} from 'matchplay/model';
-import {playersAdd, playersInit} from 'matchplay/action-creators';
-import type {State} from 'matchplay/reducers';
+import {playersMiddlewareAdd, playersAdd, playersInit} from 'matchplay/action-creators';
+import type {State} from 'matchplay/state';
 import type {Dispatch} from 'matchplay/actions';
 import Base from 'components/Base';
 import styles from './PlayerList.module.css';
@@ -19,6 +19,7 @@ type StateProps = {|
 |}
 
 type DispatchProps = {|
+  playersMiddlewareAdd : () => mixed,
   playersAdd: string => mixed,
   playersInit: () => mixed,
 |}
@@ -65,6 +66,7 @@ class PlayerList extends React.PureComponent<AllProps, LocalState> {
   }
 
   componentDidMount() {
+    this.props.playersMiddlewareAdd();
     this.props.playersInit();
   }
 
@@ -118,6 +120,7 @@ class PlayerList extends React.PureComponent<AllProps, LocalState> {
 }
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
+  playersMiddlewareAdd: () => dispatch(playersMiddlewareAdd()),
   playersAdd: (name) => dispatch(playersAdd(name)),
   playersInit: () => dispatch(playersInit()),
 })

@@ -2,7 +2,7 @@
 import type {Dispatch, Middleware} from 'redux';
 import { openDB } from 'idb';
 
-import type {State} from './reducers';
+import type {State} from './state';
 import type {Action} from './actions';
 import type {Player} from './model';
 
@@ -17,7 +17,7 @@ const dbPromise = openDB('matchplay', 1, {
   }
 });
 
-export const dbMiddleware : Middleware<State, Action, Dispatch<Action>> =
+export const playersMiddleware : Middleware<State, Action, Dispatch<Action>> =
   store => next => action => {
     switch (action.type) {
 

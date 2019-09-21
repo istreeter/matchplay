@@ -4,7 +4,7 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
-import type {State} from 'matchplay/reducers';
+import type {State} from 'matchplay/state';
 import type {Dispatch} from 'matchplay/actions';
 import {homeInit} from 'matchplay/action-creators';
 import logo from 'logo.svg';

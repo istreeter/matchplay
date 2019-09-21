@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import { withRouter , type ContextRouter} from 'react-router';
 
 import {playersAdd} from 'matchplay/action-creators';
-import type {State} from 'matchplay/reducers';
+import type {State} from 'matchplay/state';
 import type {Dispatch} from 'matchplay/actions';
 import Base from 'components/Base';
 import styles from "./PlayerAdd.module.css";

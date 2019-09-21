@@ -2,9 +2,10 @@
 import type {Dispatch} from 'redux';
 import { createStore, applyMiddleware } from 'redux';
 
-import {reducer, defaultState, type State} from './reducers';
+import {reducer, defaultState} from './reducers';
+import type {State} from './state';
 import type {Action} from './actions';
-import {dbMiddleware} from './indexeddb';
+import {middleware} from './flexible-middleware';
 
-export default createStore<State, Action, Dispatch<Action>>(reducer, defaultState, applyMiddleware(dbMiddleware));
+export default createStore<State, Action, Dispatch<Action>>(reducer, defaultState, applyMiddleware(middleware));
 

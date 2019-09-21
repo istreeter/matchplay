@@ -1,21 +1,9 @@
 // @flow
 import type {Reducer} from 'redux';
 
-import type {Player} from './model';
 import type {Action} from './actions';
+import type {State, PlayersPageModel} from './state';
 
-type PlayersPageModel = {|
-    +type: 'PLAYERS',
-    +players?: $ReadOnlyArray<Player>,
-  |};
-
-export type PageModel =
-  | {type: 'HOME'}
-  | PlayersPageModel;
-
-export type State = {|
-  +page: PageModel,
-|};
 
 export const defaultState : State = {
   page: {type: 'HOME'},

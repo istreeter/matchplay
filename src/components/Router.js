@@ -1,17 +1,21 @@
 // @flow
 
-import React from 'react';
+import React, {Suspense} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-import PlayerList from './PlayerList';
-import PlayerAdd from './PlayerAdd';
-import Home from './Home';
+const Loading = () => null;
+
+const PlayerList = React.lazy(() => import('./PlayerList'));
+const PlayerAdd = React.lazy(() => import('./PlayerAdd'));
+const Home = React.lazy(() => import('./Home'));
 
 export default (props: {}) =>
   <BrowserRouter>
     <Switch>
-      <Route path="/players/add/" exact component={PlayerAdd}/>
-      <Route path="/players/" component={PlayerList}/>
-      <Route path="/" component={Home}/>
+      <Suspense fallback={<Loading/>}>
+        <Route path="/players/add/" exact component={PlayerAdd}/>
+        <Route path="/players/" component={PlayerList}/>
+        <Route path="/" component={Home}/>
+      </Suspense>
     </Switch>
   </BrowserRouter>

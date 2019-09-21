@@ -11,7 +11,7 @@ export default (props: {}) =>
   <BrowserRouter>
     <Switch>
       <Route path="/players/add/" exact component={PlayerAdd}/>
-      <Route path="/players/" exact component={PlayerList}/>
+      <Route path="/players/" component={PlayerList}/>
       <Route path="/" component={Home}/>
     </Switch>
   </BrowserRouter>

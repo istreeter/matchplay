@@ -17,8 +17,9 @@
   text-align: center;
   padding: 20px 5px;
   flex: 0 0 160px; /* optimized for 360px width display */
-  border: 1px solid var(--theme4-color);
+  border: 3px solid #dddddd;
   background-color: #f5f5f5;
+  color: var(--theme2-color);
   border-radius: 5px;
   margin: 5px;
   display: flex;
@@ -26,6 +27,10 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+.link_add {
+  border-color: var(--theme4-color);
 }
 
 .player_grid_item > * + *,
@@ -43,6 +48,24 @@
 }
 
 .unselected {
-  color: var(--theme2-color);
+}
+
+.unselected .icon {
   opacity: 0.2;
+}
+
+.selected {
+}
+
+.start_game {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.start_game > a {
+  display: inline-block;
+  color: var(--theme1-color);
+  border: 1px solid var(--theme1-color);
+  text-decoration: none;
+  padding: 10px 20px;
 }

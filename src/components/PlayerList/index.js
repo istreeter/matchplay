@@ -3,16 +3,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { faUser, faPlus } from '@fortawesome/free-solid-svg-icons';
-import {Link} from 'react-router-dom';
+import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {withRouter, type ContextRouter} from 'react-router';
 
 import type {Player} from 'matchplay/model';
-import {playersMiddlewareAdd, playersAdd, playersInit, playersSelected} from 'matchplay/action-creators';
+import {playersMiddlewareAdd, playersInit, playersSelected} from 'matchplay/action-creators';
 import type {State} from 'matchplay/state';
 import type {Dispatch} from 'matchplay/actions';
 import Base from 'components/Base';
 import styles from './PlayerList.module.css';
+import PlayerAdd from './PlayerAdd';
 
 type StateProps = {|
   players?: $ReadOnlyArray<Player>,
@@ -21,7 +21,6 @@ type StateProps = {|
 
 type DispatchProps = {|
   playersMiddlewareAdd : () => mixed,
-  playersAdd: string => mixed,
   playersInit: () => mixed,
   playersSelected: ($ReadOnlyArray<Player>) => mixed,
 |}
@@ -72,13 +71,22 @@ class PlayerList extends React.PureComponent<AllProps> {
     }
   };
 
+  renderHelpText = () => {
+    const needed = 4 - this.props.selected.length;
+    if (needed <= 0) {
+      return null;
+    }
+    return <div className={styles.helpText}>
+      Select {needed} more player{needed > 1 ? 's' : ''} to start a game
+      </div>
+
+  }
+
   render() {
     return <Base>
+      {this.renderHelpText()}
       <div className={styles.playerListContainer}>
-        <Link className={styles.linkAdd} to="/players/add/">
-          <FontAwesomeIcon className={styles.iconAdd} icon={faPlus} size="4x"/>
-          <div>New player</div>
-        </Link>
+        <PlayerAdd/>
         {this.props.players && this.props.players.map(player =>
           <PlayerComponent key={player.id}
                            player={player}
@@ -91,7 +99,6 @@ class PlayerList extends React.PureComponent<AllProps> {
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
   playersMiddlewareAdd: () => dispatch(playersMiddlewareAdd()),
-  playersAdd: (name) => dispatch(playersAdd(name)),
   playersInit: () => dispatch(playersInit()),
   playersSelected: (players) => dispatch(playersSelected(players)),
 })

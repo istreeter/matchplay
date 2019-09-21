@@ -31,3 +31,18 @@
 
 .selected {
 }
+
+.nameInput {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  padding: 3px;
+  text-align: center;
+}
+
+.helpText {
+  text-align: center;
+  padding: 10px;
+  font-size: 1.2em;
+  color: var(--theme4-color);
+}

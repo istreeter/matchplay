@@ -22,11 +22,6 @@ export const playersMiddleware : Middleware<State, Action, Dispatch<Action>> =
     switch (action.type) {
 
       case 'PLAYERS_INIT':
-        const state = store.getState();
-        if (state.page.type === 'PLAYERS') {
-          // Drop this action
-          return action;
-        }
         dbPromise.then(db => {
           const tx = db.transaction('player', 'readonly');
           const os = tx.objectStore('player');

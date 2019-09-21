@@ -4,30 +4,19 @@
   composes: playerListContainer from '../../styles/player-grid.css';
 }
 
-.playerGridItem,
-.linkAdd {
+.playerGridItem {
   composes: playerGridItem from '../../styles/player-grid.css';
 }
 
-.linkAdd {
-  border-color: var(--theme4-color);
+.startGame {
+  margin-top: 10px;
+  text-align: center;
 }
 
-.linkAdd {
-  color: inherit;
+.startGame > a {
+  display: inline-block;
+  color: var(--theme1-color);
+  border: 1px solid var(--theme1-color);
   text-decoration: none;
-}
-
-.iconAdd {
-  color: var(--theme4-color);
-}
-
-.unselected {
-}
-
-.unselected .icon {
-  opacity: 0.2;
-}
-
-.selected {
+  padding: 10px 20px;
 }

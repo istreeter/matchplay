@@ -1,0 +1,31 @@
+.playerListContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: center;
+  color: var(--theme1-color);
+  min-height: 50vh;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.playerGridItem {
+  text-align: center;
+  padding: 20px 5px;
+  flex: 0 0 160px; /* optimized for 360px width display */
+  border: 3px solid #dddddd;
+  background-color: #f5f5f5;
+  color: var(--theme2-color);
+  border-radius: 5px;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.playerGridItem > * + * {
+  margin-top: 5px;
+}

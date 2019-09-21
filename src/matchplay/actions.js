@@ -4,14 +4,7 @@ import type {Dispatch as ReduxDispatch, Middleware} from 'redux';
 import type {Player} from './model';
 import type {State} from './state';
 
-
-// Results from middleware
-
-type MiddlewareAdd = {|
-  type: 'MIDDLEWARE_ADD',
-  name: string,
-  middleware: Middleware<State, Action, Dispatch>,
-|};
+// Targetted at reducer:
 
 type PlayersFetched = {|
   type: 'PLAYERS_FETCHED',
@@ -23,7 +16,18 @@ type PlayersAdded = {|
   player: Player,
 |};
 
+type PlayersSelected = {|
+  type: 'PLAYERS_SELECTED',
+  players: $ReadOnlyArray<Player>,
+|};
+
 // Instructions to middleware:
+
+type MiddlewareAdd = {|
+  type: 'MIDDLEWARE_ADD',
+  name: string,
+  middleware: Middleware<State, Action, Dispatch>,
+|};
 
 type PlayersAdd = {|
   type: 'PLAYERS_ADD',
@@ -39,17 +43,13 @@ type GameAdd = {|
   type: 'GAME_ADD',
 |};
 
-type HomeInit = {|
-  type: 'HOME_INIT',
-|};
-
 export type Action =
   | MiddlewareAdd
   | PlayersFetched
   | PlayersAdded
+  | PlayersSelected
   | PlayersAdd
   | GameAdd
   | PlayersInit
-  | HomeInit
 
 export type Dispatch = ReduxDispatch<Action>;

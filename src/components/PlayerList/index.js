@@ -32,7 +32,6 @@ type AllProps = {|
   ...DispatchProps,
 |}
 
-
 type PlayerProps = {|
   selected: boolean,
   player: Player,
@@ -50,7 +49,7 @@ const PlayerComponent = ({selected, player, onClick}: PlayerProps) => {
                 onClick={onClick}>
       <FontAwesomeIcon className={styles.icon} style={iconStyle} icon={faUser} size="4x"/>
       <div>{player.name} </div>
-      <div className={styles.player_stats}>won {player.won}, played {player.played}</div>
+      <div>won {player.won}, played {player.played}</div>
     </div>
 }
 

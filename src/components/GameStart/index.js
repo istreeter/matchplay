@@ -29,34 +29,24 @@ type AllProps = {|
   ...DispatchProps,
 |}
 
-type PlayerProps = {|
-  player: Player,
-|};
+const renderPlayer = (player: Player, index: number) =>
+  <div className={styles.playerGridItem} style={{borderColor: player.color}} key={index}>
+    <div>Player {index + 1}</div>
+    <FontAwesomeIcon className={styles.icon} style={{color: player.color}} icon={faUser} size="4x"/>
+    <div>{player.name}</div>
+  </div>
 
-const PlayerComponent = ({player}: PlayerProps) => {
-    return <div className={styles.playerGridItem} style={{borderColor: player.color}}>
-      <FontAwesomeIcon className={styles.icon} style={{color: player.color}} icon={faUser} size="4x"/>
-      <div>{player.name}</div>
-      <div className={styles.player_stats}>won {player.won}, played {player.played}</div>
-    </div>
-}
 
-class PlayerList extends React.PureComponent<AllProps> {
-
-  render() {
-    return this.props.selected.length === 4 ? <Base>
-        <div className={styles.playerListContainer}>
-        {this.props.selected.map(player =>
-          <PlayerComponent key={player.id}
-                           player={player}/>)}
-        </div>
-        <div className={styles.startGame}>
-          <Link to="/">Start game</Link>
-        </div>
-    </Base>
-    : <Redirect to="/players"/>;
-  }
-}
+const PlayerList = (props: AllProps) =>
+  props.selected.length === 4 ? <Base>
+      <div className={styles.playerListContainer}>
+        {props.selected.map(renderPlayer)}
+      </div>
+      <div className={styles.startGame}>
+        <Link to="/">Start game</Link>
+      </div>
+  </Base>
+  : <Redirect to="/players"/>;
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
   xxx: undefined,

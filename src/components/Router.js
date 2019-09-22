@@ -3,7 +3,9 @@
 import React, {Suspense} from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-const Loading = () => null;
+import Base from './Base';
+
+const Loading = () => <Base/>
 
 const PlayerList = React.lazy(() => import('./PlayerList'));
 const Home = React.lazy(() => import('./Home'));

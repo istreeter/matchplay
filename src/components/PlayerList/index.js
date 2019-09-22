@@ -78,9 +78,9 @@ class PlayerList extends React.PureComponent<AllProps> {
     const needed = 4 - this.props.selected.length;
     const msg = needed === 4 ? '4'
               : needed > 0 ? `${needed} more`
-              : '';
+              : '4';
     return <div className={styles.helpText}>
-      Select {msg} player{needed > 1 ? 's' : ''} to start a game
+      Select {msg} player{needed === 1 ? '' : 's'} to start a game
       </div>
 
   }

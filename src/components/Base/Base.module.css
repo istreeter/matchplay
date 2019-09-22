@@ -1,15 +1,10 @@
 @import '~styles/global.css';
 
 .container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-
   --header-height: 80px;
 }
 
 .header {
-  flex: 0 0 auto;
   height: var(--header-height);
   background-color: var(--theme1-color);
   display: flex;
@@ -27,8 +22,6 @@
 }
 
 .content {
-  flex-grow: 1;
-  overflow: hidden;
 }
 
 .logo {

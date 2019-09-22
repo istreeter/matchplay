@@ -8,6 +8,8 @@ import {faPlus, faUser} from '@fortawesome/free-solid-svg-icons';
 import styles from './PlayerList.module.css';
 import playersAdd from 'matchplay/action-dispatchers/players-add';
 import type {Dispatch} from 'matchplay/actions';
+import type {State} from 'matchplay/state';
+import type {Player} from 'matchplay/model';
 import {randomColor} from 'matchplay/utils';
 
 export default () => {

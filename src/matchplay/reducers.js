@@ -26,9 +26,13 @@ export const reducer : Reducer<State, Action> =
         const players = state.players === undefined
                     ? [[action.playerId, action.player]]
                     : [[action.playerId, action.player], ...state.players];
+        const selectedPlayers = state.selectedPlayers.size < 4
+            ? new Map([[action.playerId, action.player], ...state.selectedPlayers])
+            : state.selectedPlayers;
         return {
           ...state,
           players: new Map(players),
+          selectedPlayers,
           };
 
       case 'PLAYERS_SELECTED':

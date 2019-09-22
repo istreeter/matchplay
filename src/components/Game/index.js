@@ -3,6 +3,8 @@
 import React, {useEffect} from 'react';
 import {withRouter, type Match, type RouterHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPlus, faUser} from '@fortawesome/free-solid-svg-icons';
 
 import type {Dispatch} from 'matchplay/actions';
 import type {State} from 'matchplay/state';
@@ -38,12 +40,18 @@ const GameComponent = ({match, history}: Props) => {
 
   const winner = game.winner && game.players.get(game.winner);
 
-  const renderPlayer = (player) =>
-    <div className={styles.playerCard}>{player.name}</div>
+  const renderPlayer = (player, index) =>
+    <div>
+      Player {index + 1}
+      <div className={styles.playerCard} style={{borderColor: player.color}}>
+        <FontAwesomeIcon className={styles.icon} style={{color: player.color}} icon={faUser} size="2x"/>
+      </div>
+      {player.name}
+    </div>
 
   return <Base>
     <div className={styles.container}>
-      <div>Game {id} Scorecard</div>
+      <h2>Game {id} Scorecard</h2>
       {winner && <div>Winner: {winner.name}</div>}
       <div className={styles.row}>{Array.from(game.players.values(), renderPlayer)}</div>
 

@@ -6,19 +6,26 @@ import type {Action, Dispatch} from 'matchplay/actions';
 import type {State} from 'matchplay/state';
 import dbPromise from 'matchplay/db';
 
+const handler = async (action, dispatch) => {
+  const db = await dbPromise;
+  const tx = db.transaction('player', 'readonly');
+  const os = tx.store;
+  let cursor = await os.openCursor();
+  const players = [];
+  while (cursor) {
+    players.push({...cursor.value, id: cursor.key});
+    cursor = await cursor.continue();
+  }
+  dispatch({
+            type: 'PLAYERS_FETCHED',
+            players,
+  });
+}
+
 const middleware : Middleware<State, Action, Dispatch> =
   store => next => action => {
     if (action.type === 'PLAYERS_INIT') {
-        dbPromise.then(db => {
-          const tx = db.transaction('player', 'readonly');
-          const os = tx.objectStore('player');
-          return os.getAll();
-        }).then(players =>
-          store.dispatch({
-            type: 'PLAYERS_FETCHED',
-            players,
-          })
-        );
+      handler(action, store.dispatch);
     }
     return next(action);
   }

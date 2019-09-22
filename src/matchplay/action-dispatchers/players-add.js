@@ -4,31 +4,36 @@ import type {Middleware} from 'redux';
 
 import type {Action, Dispatch} from 'matchplay/actions';
 import type {State} from 'matchplay/state';
-import type {Player} from 'matchplay/model';
+import type {DbPlayer} from 'matchplay/model';
 import dbPromise from 'matchplay/db';
+
+const handler = async (action, dispatch) => {
+  const player : DbPlayer = {
+    name: action.name,
+    color: action.color,
+    played: 0,
+    won: 0,
+    precedence: new Date(),
+  };
+
+  const db = await dbPromise;
+  const tx = db.transaction('player', 'readwrite');
+  const os = tx.store;
+
+  const id = await os.add(player);
+  await tx.complete;
+
+  dispatch({
+    type: 'PLAYERS_ADDED',
+    player: {...player, id},
+  })
+
+}
 
 const middleware : Middleware<State, Action, Dispatch> =
   store => next => action => {
     if (action.type === 'PLAYERS_ADD') {
-      const player : Player = {
-        id: Date.now(),
-        name: action.name,
-        color: action.color,
-        played: 0,
-        won: 0,
-        precedence: new Date(),
-      };
-      dbPromise.then(db => {
-        const tx = db.transaction('player', 'readwrite');
-        const os = tx.objectStore('player');
-        os.add(player);
-        return tx.complete
-      }).then(result =>
-        store.dispatch({
-          type: 'PLAYERS_ADDED',
-          player: player,
-        })
-      )
+      handler(action, store.dispatch);
     }
     return next(action);
   }

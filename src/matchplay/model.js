@@ -1,13 +1,17 @@
 // @flow
 
-export type Player = {|
-    +id: number,
+export type DbPlayer = {|
     +name: string,
     +color: string,
     +played: number,
     +won: number,
     +precedence: Date,
   |};
+
+export type Player = {|
+  id: number,
+  ...DbPlayer,
+|};
 
 export type PlayerScorecard = {|
     +player: number,

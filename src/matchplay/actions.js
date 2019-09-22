@@ -26,6 +26,14 @@ type PlayersSelected = {|
 type GameFetched = {|
   type: 'GAME_FETCHED',
   game: Game,
+  gameId: number,
+|};
+
+// (Typed like this to keep the reducer very simple)
+type GameUpdated = {|
+  type: 'GAME_UPDATED',
+  game: Game,
+  gameId: number,
 |};
 
 // Instructions to middleware:
@@ -58,6 +66,13 @@ type GameInit = {|
   history: RouterHistory,
 |};
 
+type HolesAdd = {|
+  type: 'HOLES_ADD',
+  gameId: number,
+  holeIndex: number,
+  scores: $ReadOnlyMap<number, number>, // map from playerId to score
+|};
+
 export type Action =
   | MiddlewareAdd
   | PlayersFetched
@@ -68,5 +83,7 @@ export type Action =
   | GameInit
   | PlayersInit
   | GameFetched
+  | HolesAdd
+  | GameUpdated
 
 export type Dispatch = ReduxDispatch<Action>;

@@ -8,7 +8,9 @@ const dbPromise = async () => {
     upgrade(upgradeDB) {
       const playerOs = upgradeDB.createObjectStore('player', {autoIncrement: true});
       playerOs.createIndex('precedence', 'precedence');
-      upgradeDB.createObjectStore('game', {autoIncrement: true});
+
+      const gameOs = upgradeDB.createObjectStore('game', {autoIncrement: true});
+      gameOs.createIndex('date', 'date');
     }
   });
 }

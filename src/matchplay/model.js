@@ -8,13 +8,9 @@ export type Player = {|
     +precedence: Date,
   |};
 
-export type PlayerScorecard = {|
-    +player: number,
-    +points: $ReadOnlyArray<number>,
-  |};
-
 export type Game = {|
     +date: Date,
     +winner?: number,
-    +scores : $ReadOnlyArray<PlayerScorecard>,
+    +players: $ReadOnlyMap<number, Player>,
+    +holes: $ReadOnlyArray<$ReadOnlyMap<number, number>>, // map from playerId to points
   |};

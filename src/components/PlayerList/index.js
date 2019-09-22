@@ -51,7 +51,7 @@ const PlayerList = ({history}: Props) => {
   const handlePlayerSelect = (id: number, player: Player) => {
     const newSelected = selected.has(id)
           ? new Map([...selected.entries()].filter(([id2, p]) => id2 !== id))
-          : new Map([[id, player], ...selected.entries()]);
+          : new Map([...selected.entries(), [id, player]]);
     playersSelected(dispatch)(newSelected);
     if (newSelected.size === 4) {
       history.push("/game/start");

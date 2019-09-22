@@ -17,6 +17,7 @@ const handler = async (action, dispatch) => {
     dispatch({
               type: 'GAME_FETCHED',
               game,
+              gameId: action.id,
     });
   }
 }

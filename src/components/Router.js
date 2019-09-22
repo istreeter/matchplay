@@ -10,6 +10,7 @@ const Loading = () => <Base/>
 const PlayerList = React.lazy(() => import('./PlayerList'));
 const Home = React.lazy(() => import('./Home'));
 const GameStart = React.lazy(() => import('./GameStart'));
+const Game = React.lazy(() => import('./Game'));
 
 export default (props: {}) =>
   <BrowserRouter>
@@ -17,6 +18,7 @@ export default (props: {}) =>
       <Switch>
         <Route path="/players/" exact component={PlayerList}/>
         <Route path="/game/start/" exact component={GameStart}/>
+        <Route path="/game/:id/" exact component={Game}/>
         <Route path="/" component={Home}/>
       </Switch>
     </Suspense>

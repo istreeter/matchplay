@@ -25,7 +25,7 @@ const handler = async (action) => {
 
   const id = await os.add(game);
   await tx.complete;
-  action.history.push(`/games/${id}`)
+  action.history.push(`/game/${id}/`)
 }
 
 const middleware : Middleware<State, Action, Dispatch> =

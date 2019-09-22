@@ -31,13 +31,24 @@ type AllProps = {|
 const PlayerAdd = ({playersAdd}: AllProps) => {
   const [name, setName] = useState("");
   const [showInput, setShowInput] = useState(false);
-  const [color] = useState(randomColor());
+  const [color, setColor] = useState(randomColor());
 
-  const handleKeyUp = (e) => {
-    if (e.key === 'Enter' && name !== "") {
+  const handleCloseInput = () => {
+    setColor(randomColor());
+    setShowInput(false);
+  }
+
+  const handleSubmit = () => {
+    if (name !== "") {
       playersAdd(name, color);
       setShowInput(false);
       setName("");
+    }
+  }
+
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
     }
   }
 
@@ -45,13 +56,16 @@ const PlayerAdd = ({playersAdd}: AllProps) => {
     return <div className={styles.playerGridItem} style={{borderColor: color}}>
       <FontAwesomeIcon className={styles.icon} style={{color: color}} icon={faUser} size="4x"/>
       <div>New player</div>
-      <input value={name}
-             onChange={ev => setName(ev.target.value)}
-             placeholder="Name"
-             onKeyUp={handleKeyUp}
-             className={styles.nameInput}
-             onBlur={() => setShowInput(false)}
-             autoFocus/>
+      <div className={styles.inputGroup}>
+        <input value={name}
+               onChange={ev => setName(ev.target.value)}
+               placeholder="Name"
+               onKeyUp={handleKeyUp}
+               className={styles.nameInput}
+               onBlur={handleCloseInput}
+               autoFocus/>
+        <button onClick={handleSubmit}>OK</button>
+      </div>
     </div>
   }
 

@@ -33,11 +33,15 @@
 }
 
 .nameInput {
-  width: 100%;
   font: inherit;
   color: inherit;
   padding: 3px;
   text-align: center;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
 }
 
 .helpText {
@@ -45,4 +49,9 @@
   padding: 30px 5px;
   font-size: 1.2em;
   color: var(--theme4-color);
+}
+
+
+.inputGroup > button {
+  cursor: pointer;
 }

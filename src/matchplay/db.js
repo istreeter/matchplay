@@ -1,16 +1,16 @@
 // @flow
 //
-import { openDB } from 'idb';
+import { openDB, deleteDB } from 'idb';
 
-const dbPromise : Promise<Object> = openDB('matchplay', 1, {
-  upgrade(upgradeDB) {
-    if (!upgradeDB.objectStoreNames.contains('player')) {
-      upgradeDB.createObjectStore('player', {keyPath: 'id'});
-    }
-    if (!upgradeDB.objectStoreNames.contains('game')) {
+const dbPromise = async () => {
+  await deleteDB('matchplay');
+  return await openDB('matchplay2', 1, {
+    upgrade(upgradeDB) {
+      const playerOs = upgradeDB.createObjectStore('player', {autoIncrement: true});
+      playerOs.createIndex('precedence', 'precedence');
       upgradeDB.createObjectStore('game', {autoIncrement: true});
     }
-  }
-});
+  });
+}
 
-export default dbPromise;
+export default dbPromise();

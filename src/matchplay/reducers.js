@@ -18,8 +18,7 @@ export const reducer : Reducer<State, Action> =
       case 'PLAYERS_FETCHED':
         return {
             ...state,
-            // TODO: dbIndex to sort
-            players: new Map([...action.players.entries()].sort(([aId, a], [bId, b]) => b.precedence - a.precedence)),
+            players: action.players,
           };
 
       case 'PLAYERS_ADDED':

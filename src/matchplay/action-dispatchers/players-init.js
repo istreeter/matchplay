@@ -10,10 +10,10 @@ const handler = async (action, dispatch) => {
   const db = await dbPromise;
   const tx = db.transaction('player', 'readonly');
   const os = tx.store;
-  let cursor = await os.openCursor();
+  let cursor = await os.index('precedence').openCursor(undefined, 'prev');
   const players = new Map();
   while (cursor) {
-    players.set(cursor.key, cursor.value);
+    players.set(cursor.primaryKey, cursor.value);
     cursor = await cursor.continue();
   }
   dispatch({

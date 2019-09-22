@@ -46,7 +46,9 @@ const PlayerList = ({history}: Props) => {
   const selected = useSelector<State, $ReadOnlyMap<number, Player>>(state => state.selectedPlayers);
   const players = useSelector<State, $ReadOnlyMap<number, Player> | void>(state => state.players);
 
-  useEffect(() => playersInit(dispatch)());
+  console.log(players, selected);
+
+  useEffect(() => playersInit(dispatch)(), [dispatch]);
 
   const handlePlayerSelect = (id: number, player: Player) => {
     const newSelected = selected.has(id)

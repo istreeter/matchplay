@@ -54,7 +54,7 @@ const PlayerList = ({history}: Props) => {
           : new Map([...selected.entries(), [id, player]]);
     playersSelected(dispatch)(newSelected);
     if (newSelected.size === 4) {
-      history.push("/game/start");
+      history.push("/game/start/");
     }
   };
 

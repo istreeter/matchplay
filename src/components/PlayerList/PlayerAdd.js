@@ -1,7 +1,7 @@
 // @flow
 
-import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faUser} from '@fortawesome/free-solid-svg-icons';
 
@@ -15,6 +15,10 @@ export default () => {
   const [showInput, setShowInput] = useState(false);
   const [color, setColor] = useState(randomColor());
   const dispatch : Dispatch = useDispatch();
+
+  // reset if user is clicking on other icons
+  const selected = useSelector<State, $ReadOnlyMap<number, Player>>(state => state.selectedPlayers);
+  useEffect(() => setShowInput(false), [selected]);
 
   const handleSubmit = () => {
     if (name !== "") {

@@ -4,8 +4,7 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
-import {Redirect} from 'react-router-dom';
-import {withRouter, type RouterHistory} from 'react-router';
+import {Redirect, Link, withRouter, type RouterHistory} from 'react-router-dom';
 
 import type {Player} from 'matchplay/model';
 import type {State} from 'matchplay/state';
@@ -46,6 +45,7 @@ const PlayerList = (props: Props) => {
       </div>
       <div className={styles.startGame}>
         <button onClick={handleSubmit}>Start game</button>
+        <Link to="/players/">Change players</Link>
       </div>
   </Base>
   : <Redirect to="/players"/>;

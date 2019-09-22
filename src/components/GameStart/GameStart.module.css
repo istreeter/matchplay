@@ -9,8 +9,13 @@
 }
 
 .startGame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.startGame > * {
   margin-top: 10px;
-  text-align: center;
 }
 
 .startGame > button {
@@ -20,6 +25,11 @@
   font: inherit;
   cursor: pointer;
   border: 1px solid var(--theme1-color);
+  padding: 10px 20px;
+}
+
+.startGame > a {
   text-decoration: none;
   padding: 10px 20px;
+  color: var(--theme4-color);
 }

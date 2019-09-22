@@ -32,6 +32,10 @@ type AllProps = {|
   ...DispatchProps,
 |}
 
+type LocalState = {|
+  submitted: boolean,
+|};
+
 const renderPlayer = (player: Player, index: number) =>
   <div className={styles.playerGridItem} style={{borderColor: player.color}} key={index}>
     <div>Player {index + 1}</div>
@@ -40,17 +44,32 @@ const renderPlayer = (player: Player, index: number) =>
   </div>
 
 
-// TODO: disable button after submitted because handler is async
-const PlayerList = (props: AllProps) =>
-  props.selected.length === 4 ? <Base>
-      <div className={styles.playerListContainer}>
-        {props.selected.map(renderPlayer)}
-      </div>
-      <div className={styles.startGame}>
-        <button onClick={() => props.gamesAdd(props.selected, props.history)}>Start game</button>
-      </div>
-  </Base>
-  : <Redirect to="/players"/>;
+class PlayerList extends React.PureComponent<AllProps, LocalState> {
+
+  constructor(props: AllProps) {
+    super(props);
+    this.state = {submitted: false};
+  }
+
+  handleSubmit = () => {
+    if (!this.state.submitted) {
+      this.props.gamesAdd(this.props.selected, this.props.history);
+      this.setState({submitted: true});
+    }
+  }
+
+  render() {
+    return this.props.selected.length === 4 ? <Base>
+        <div className={styles.playerListContainer}>
+          {this.props.selected.map(renderPlayer)}
+        </div>
+        <div className={styles.startGame}>
+          <button onClick={this.handleSubmit}>Start game</button>
+        </div>
+    </Base>
+    : <Redirect to="/players"/>;
+  }
+}
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
   gamesAdd: gamesAdd(dispatch),

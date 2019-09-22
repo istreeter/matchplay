@@ -2,7 +2,7 @@
 import type {Dispatch as ReduxDispatch, Middleware} from 'redux';
 import type {RouterHistory} from 'react-router-dom';
 
-import type {Player} from './model';
+import type {Player, Game} from './model';
 import type {State} from './state';
 
 // Targetted at reducer:
@@ -21,6 +21,11 @@ type PlayersAdded = {|
 type PlayersSelected = {|
   type: 'PLAYERS_SELECTED',
   players: $ReadOnlyMap<number, Player>,
+|};
+
+type GameFetched = {|
+  type: 'GAME_FETCHED',
+  game: Game,
 |};
 
 // Instructions to middleware:
@@ -47,6 +52,12 @@ type GameAdd = {|
   history: RouterHistory,
 |};
 
+type GameInit = {|
+  type: 'GAME_INIT',
+  id: number,
+  history: RouterHistory,
+|};
+
 export type Action =
   | MiddlewareAdd
   | PlayersFetched
@@ -54,6 +65,8 @@ export type Action =
   | PlayersSelected
   | PlayersAdd
   | GameAdd
+  | GameInit
   | PlayersInit
+  | GameFetched
 
 export type Dispatch = ReduxDispatch<Action>;

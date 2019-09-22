@@ -46,8 +46,6 @@ const PlayerList = ({history}: Props) => {
   const selected = useSelector<State, $ReadOnlyMap<number, Player>>(state => state.selectedPlayers);
   const players = useSelector<State, $ReadOnlyMap<number, Player> | void>(state => state.players);
 
-  console.log(players, selected);
-
   useEffect(() => playersInit(dispatch)(), [dispatch]);
 
   const handlePlayerSelect = (id: number, player: Player) => {

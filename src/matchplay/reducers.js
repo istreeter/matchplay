@@ -8,6 +8,7 @@ import type {State} from './state';
 export const defaultState : State = {
   players: undefined,
   selectedPlayers: new Map(),
+  game: undefined,
 };
 
 export const reducer : Reducer<State, Action> =
@@ -35,6 +36,12 @@ export const reducer : Reducer<State, Action> =
           ...state,
           selectedPlayers: action.players,
           };
+
+      case 'GAME_FETCHED':
+        return {
+          ...state,
+          game: action.game,
+        }
 
       default:
         return state;

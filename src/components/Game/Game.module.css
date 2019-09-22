@@ -1,0 +1,49 @@
+@import '~styles/global.css';
+
+.row {
+  display: flex;
+  margin: 5px;
+}
+
+.row > * {
+  flex: 1 1 0;
+  text-align: center;
+}
+
+.row > * + * {
+  margin-left: 5px;
+}
+
+.playerCard {
+}
+
+.scoreSelect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scoreSelect > button {
+  padding: 10px;
+  font: inherit;
+  cursor: pointer;
+  width: 4rem;
+  background-color: white;
+  box-shadow: none;
+  border-style: solid;
+}
+
+.scoreSelect > button.selected {
+  color: white;
+  background-color: var(--theme3-color);
+  font-weight: 700;
+}
+
+.scorecard > *+* {
+  margin-top: 5px;
+}
+
+.help {
+  text-align: center;
+  margin: 20px 10px;
+}

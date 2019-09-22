@@ -2,25 +2,25 @@
 import React from 'react';
 
 import type {Player} from 'matchplay/model';
+import styles from "./Game.module.css";
 
 type Props = {|
-  holeIndex: number,
+  gameId: number,
   players: $ReadOnlyMap<number, Player>,
   scores: $ReadOnlyMap<number, number>
 |}
 
-export default ({scores, players, holeIndex}: Props) => {
+export default ({scores, players, gameId}: Props) => {
 
-  const renderPlayerScore = ([playerId, score], index) => {
-    const player = players.get(playerId);
-    if (player === undefined) {
-      return null;
-    }
-    return <div key={index}>{player.name}: {score} points</div>;
+  const renderPlayerScore = ([playerId, player], index) => {
+    const score = scores.get(playerId);
+    return <div key={index}>{score}</div>;
   }
 
-  return <div>
-    Hole {holeIndex+1}
-    {Array.from(scores, renderPlayerScore)}
-  </div>;
+  return <>
+    <div className={styles.row}>
+      {Array.from(players, renderPlayerScore)}
+    </div>
+  </>;
 }
+

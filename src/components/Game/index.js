@@ -10,6 +10,7 @@ import gameInit from 'matchplay/action-dispatchers/game-init';
 import Base from 'components/Base';
 import Hole from './Hole';
 import ActiveHole from './ActiveHole';
+import styles from './Game.module.css';
 
 type Props = {|
   match: Match,
@@ -37,15 +38,26 @@ const GameComponent = ({match, history}: Props) => {
 
   const winner = game.winner && game.players.get(game.winner);
 
+  const renderPlayer = (player) =>
+    <div className={styles.playerCard}>{player.name}</div>
+
   return <Base>
-      <div>Game {id}</div>
+      <div>Game {id} Scorecard</div>
       {winner && <div>Winner: {winner.name}</div>}
-      <div>
+      <div className={styles.row}>{Array.from(game.players.values(), renderPlayer)}</div>
+      <div className={styles.scorecard}>
         {game.holes.map((scores, index) =>
-          <Hole key={index}
-                holeIndex={index}
+          <React.Fragment key={index}>
+          <div>Hole {index+1}</div>
+          <Hole gameId={id}
                 players={game.players}
-                scores={scores}/>)}
+                scores={scores}/>
+          </React.Fragment>)}
+      </div>
+
+
+      <div className={styles.scorecard}>
+        <div>Hole {game.holes.length +1}</div>
         {game.holes.length < 18 && <ActiveHole
                 gameId={id}
                 holeIndex={game.holes.length}

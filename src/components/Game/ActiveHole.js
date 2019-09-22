@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 import type {Player} from 'matchplay/model';
 import type {Dispatch} from 'matchplay/actions';
 import holesAdd from 'matchplay/action-dispatchers/holes-add';
+import styles from "./Game.module.css";
 
 type Props = {|
   gameId: number,
@@ -29,19 +30,29 @@ export default ({players, holeIndex, gameId}: Props) => {
   const renderPlayerScore = ([playerId, player], index) => {
     const score = scores.get(playerId);
 
-    return <div key={index}>
-      {player.name}: {score}
+    return <div key={index} className={styles.scoreSelect}>
       {Array.from(Array(4).keys(), i =>
-        <button key={i} onClick={() => handleClick(playerId, i+1)}>{i+1}</button>)}
+        <button key={i}
+                onClick={() => handleClick(playerId, i+1)}
+                className={score === i+1 ? styles.selected : undefined}>{i+1}</button>)}
     </div>;
   }
 
   const handleSubmit = () =>
     holesAdd(dispatch)(gameId, holeIndex, scores);
 
-  return <div>
-    Hole {holeIndex+1}
-    {Array.from(players, renderPlayerScore)}
-    {scores.size === players.size && <button onClick={handleSubmit}>submit</button>}
-  </div>;
+  const renderSubmit = () => {
+    if (scores.size !== players.size) {
+      return <div className={styles.help}>select score for each player</div>
+    }
+    const msg = holeIndex === 17 ? "Submit scorecard" : "Next hole";
+    return <button onClick={handleSubmit}>{msg}</button>
+  }
+
+  return<>
+    <div className={styles.row}>
+      {Array.from(players, renderPlayerScore)}
+    </div>
+    {renderSubmit()}
+  </>;
 }

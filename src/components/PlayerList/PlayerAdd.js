@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faUser} from '@fortawesome/free-solid-svg-icons';
 
 import styles from './PlayerList.module.css';
-import {playersAdd} from 'matchplay/action-creators';
+import playersAdd from 'matchplay/action-dispatchers/players-add';
 import type {State} from 'matchplay/state';
 import type {Dispatch} from 'matchplay/actions';
 import {randomColor} from 'matchplay/utils';
@@ -31,7 +31,7 @@ type AllProps = {|
 const PlayerAdd = ({playersAdd}: AllProps) => {
   const [name, setName] = useState("");
   const [showInput, setShowInput] = useState(false);
-  const [color, setColor] = useState(randomColor());
+  const [color] = useState(randomColor());
 
   const handleKeyUp = (e) => {
     if (e.key === 'Enter' && name !== "") {
@@ -63,7 +63,7 @@ const PlayerAdd = ({playersAdd}: AllProps) => {
 
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  playersAdd: (name, color) => dispatch(playersAdd(name, color)),
+  playersAdd: (name, color) => playersAdd(dispatch),
 })
 
 const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({

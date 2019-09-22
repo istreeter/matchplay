@@ -4,10 +4,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
-import {withRouter, type ContextRouter} from 'react-router';
+import {withRouter, type RouterHistory} from 'react-router';
 
 import type {Player} from 'matchplay/model';
-import {playersMiddlewareAdd, playersInit, playersSelected} from 'matchplay/action-creators';
+import playersSelected from 'matchplay/action-dispatchers/players-selected';
+import playersInit from 'matchplay/action-dispatchers/players-init';
 import type {State} from 'matchplay/state';
 import type {Dispatch} from 'matchplay/actions';
 import Base from 'components/Base';
@@ -19,15 +20,18 @@ type StateProps = {|
   selected: $ReadOnlyArray<Player>,
 |}
 
+type OwnProps = {|
+  history: RouterHistory,
+|}
+
 type DispatchProps = {|
-  playersMiddlewareAdd : () => mixed,
   playersInit: () => mixed,
   playersSelected: ($ReadOnlyArray<Player>) => mixed,
 |}
 
 type AllProps = {|
   ...StateProps,
-  ...ContextRouter,
+  ...OwnProps,
   ...DispatchProps,
 |}
 
@@ -55,7 +59,6 @@ const PlayerComponent = ({selected, player, onClick}: PlayerProps) => {
 class PlayerList extends React.PureComponent<AllProps> {
 
   componentDidMount() {
-    this.props.playersMiddlewareAdd();
     this.props.playersInit();
   }
 
@@ -73,11 +76,11 @@ class PlayerList extends React.PureComponent<AllProps> {
 
   renderHelpText = () => {
     const needed = 4 - this.props.selected.length;
-    if (needed <= 0) {
-      return null;
-    }
+    const msg = needed === 4 ? '4'
+              : needed > 0 ? `${needed} more`
+              : '';
     return <div className={styles.helpText}>
-      Select {needed} more player{needed > 1 ? 's' : ''} to start a game
+      Select {msg} player{needed > 1 ? 's' : ''} to start a game
       </div>
 
   }
@@ -98,16 +101,15 @@ class PlayerList extends React.PureComponent<AllProps> {
 }
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  playersMiddlewareAdd: () => dispatch(playersMiddlewareAdd()),
-  playersInit: () => dispatch(playersInit()),
-  playersSelected: (players) => dispatch(playersSelected(players)),
+  playersInit: playersInit(dispatch),
+  playersSelected: playersSelected(dispatch),
 })
 
-const mapStateToProps = (state : State, ownProps : ContextRouter) : StateProps => ({
+const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({
   players: state.players,
   selected: state.selectedPlayers,
 });
 
-const connected = connect<AllProps, ContextRouter, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);
+const connected = connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);
 
 export default withRouter(connected);

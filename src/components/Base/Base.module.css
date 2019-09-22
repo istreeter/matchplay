@@ -34,5 +34,5 @@
 .logo {
   height: var(--header-height);
   width: var(--header-height);
-  padding: 2px;
+  padding: 10px;
 }

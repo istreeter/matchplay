@@ -11,11 +11,11 @@ const GameStart = React.lazy(() => import('./GameStart'));
 
 export default (props: {}) =>
   <BrowserRouter>
-    <Switch>
-      <Suspense fallback={<Loading/>}>
+    <Suspense fallback={<Loading/>}>
+      <Switch>
         <Route path="/players/" exact component={PlayerList}/>
         <Route path="/game/start/" exact component={GameStart}/>
-        <Route path="/" exact component={Home}/>
-      </Suspense>
-    </Switch>
+        <Route path="/" component={Home}/>
+      </Switch>
+    </Suspense>
   </BrowserRouter>

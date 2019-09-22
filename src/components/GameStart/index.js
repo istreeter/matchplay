@@ -1,7 +1,7 @@
 // @flow
 
-import React from 'react';
-import {connect} from 'react-redux';
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {Redirect} from 'react-router-dom';
@@ -14,27 +14,9 @@ import gamesAdd from 'matchplay/action-dispatchers/games-add';
 import Base from 'components/Base';
 import styles from './GameStart.module.css';
 
-type StateProps = {|
-  selected: $ReadOnlyArray<Player>,
-|}
-
-type OwnProps = {|
+type Props = {|
   history: RouterHistory,
 |}
-
-type DispatchProps = {|
-  gamesAdd: ($ReadOnlyArray<Player>, RouterHistory) => mixed,
-|}
-
-type AllProps = {|
-  ...StateProps,
-  ...OwnProps,
-  ...DispatchProps,
-|}
-
-type LocalState = {|
-  submitted: boolean,
-|};
 
 const renderPlayer = (player: Player, index: number) =>
   <div className={styles.playerGridItem} style={{borderColor: player.color}} key={index}>
@@ -44,41 +26,29 @@ const renderPlayer = (player: Player, index: number) =>
   </div>
 
 
-class PlayerList extends React.PureComponent<AllProps, LocalState> {
+const PlayerList = (props: Props) => {
 
-  constructor(props: AllProps) {
-    super(props);
-    this.state = {submitted: false};
-  }
+  const selected = useSelector<State, $ReadOnlyArray<Player>>(state => state.selectedPlayers);
+  const dispatch : Dispatch = useDispatch();
+  const [submitted, setSubmitted] = useState(false);
 
-  handleSubmit = () => {
-    if (!this.state.submitted) {
-      this.props.gamesAdd(this.props.selected, this.props.history);
-      this.setState({submitted: true});
+  const handleSubmit = () => {
+    if (!submitted) {
+      gamesAdd(dispatch)(selected, props.history);
+      // Disable button after submitted because gamesAdd handler is async:
+      setSubmitted(true);
     }
   }
 
-  render() {
-    return this.props.selected.length === 4 ? <Base>
-        <div className={styles.playerListContainer}>
-          {this.props.selected.map(renderPlayer)}
-        </div>
-        <div className={styles.startGame}>
-          <button onClick={this.handleSubmit}>Start game</button>
-        </div>
-    </Base>
-    : <Redirect to="/players"/>;
-  }
+  return selected.length === 4 ? <Base>
+      <div className={styles.playerListContainer}>
+        {selected.map(renderPlayer)}
+      </div>
+      <div className={styles.startGame}>
+        <button onClick={handleSubmit}>Start game</button>
+      </div>
+  </Base>
+  : <Redirect to="/players"/>;
 }
 
-const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  gamesAdd: gamesAdd(dispatch),
-})
-
-const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({
-  selected: state.selectedPlayers,
-});
-
-const connected = connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);
-
-export default withRouter(connected);
+export default withRouter(PlayerList);

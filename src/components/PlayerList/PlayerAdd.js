@@ -1,41 +1,24 @@
 // @flow
 
 import React, {useState} from 'react';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faUser} from '@fortawesome/free-solid-svg-icons';
 
 import styles from './PlayerList.module.css';
 import playersAdd from 'matchplay/action-dispatchers/players-add';
-import type {State} from 'matchplay/state';
 import type {Dispatch} from 'matchplay/actions';
 import {randomColor} from 'matchplay/utils';
 
-type StateProps = {|
-  xxx: void,
-|}
-
-type OwnProps = {|
-|}
-
-type DispatchProps = {|
-  playersAdd: (string, string) => mixed,
-|}
-
-type AllProps = {|
-  ...StateProps,
-  ...OwnProps,
-  ...DispatchProps,
-|}
-
-const PlayerAdd = ({playersAdd}: AllProps) => {
+export default () => {
   const [name, setName] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [color, setColor] = useState(randomColor());
+  const dispatch : Dispatch = useDispatch();
 
   const handleSubmit = () => {
     if (name !== "") {
-      playersAdd(name, color);
+      playersAdd(dispatch)(name, color);
       setShowInput(false);
       setName("");
       setColor(randomColor());
@@ -69,14 +52,3 @@ const PlayerAdd = ({playersAdd}: AllProps) => {
       <div>New player</div>
     </div>;
 }
-
-
-const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  playersAdd: playersAdd(dispatch),
-})
-
-const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({
-  xxx: undefined,
-});
-
-export default connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerAdd);

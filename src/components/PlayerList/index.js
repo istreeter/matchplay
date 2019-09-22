@@ -1,7 +1,7 @@
 // @flow
 
-import React from 'react';
-import {connect} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {withRouter, type RouterHistory} from 'react-router';
@@ -15,24 +15,8 @@ import Base from 'components/Base';
 import styles from './PlayerList.module.css';
 import PlayerAdd from './PlayerAdd';
 
-type StateProps = {|
-  players?: $ReadOnlyArray<Player>,
-  selected: $ReadOnlyArray<Player>,
-|}
-
-type OwnProps = {|
+type Props = {|
   history: RouterHistory,
-|}
-
-type DispatchProps = {|
-  playersInit: () => mixed,
-  playersSelected: ($ReadOnlyArray<Player>) => mixed,
-|}
-
-type AllProps = {|
-  ...StateProps,
-  ...OwnProps,
-  ...DispatchProps,
 |}
 
 type PlayerProps = {|
@@ -56,26 +40,27 @@ const PlayerComponent = ({selected, player, onClick}: PlayerProps) => {
     </div>
 }
 
-class PlayerList extends React.PureComponent<AllProps> {
+const PlayerList = ({history}: Props) => {
 
-  componentDidMount() {
-    this.props.playersInit();
-  }
+  const dispatch : Dispatch = useDispatch();
+  const selected = useSelector<State, $ReadOnlyArray<Player>>(state => state.selectedPlayers);
+  const players = useSelector<State, $ReadOnlyArray<Player> | void>(state => state.players);
 
-  handlePlayerSelect = (p: Player) => {
-    const {selected} = this.props;
+  useEffect(() => playersInit(dispatch)());
+
+  const handlePlayerSelect = (p: Player) => {
     const newSelected =
       selected.find(p2 => p2.id === p.id) === undefined
       ? [p, ...selected]
       : selected.filter(p2 => p.id !== p2.id);
-    this.props.playersSelected(newSelected);
+    playersSelected(dispatch)(newSelected);
     if (newSelected.length === 4) {
-      this.props.history.push("/game/start");
+      history.push("/game/start");
     }
   };
 
-  renderHelpText = () => {
-    const needed = 4 - this.props.selected.length;
+  const renderHelpText = () => {
+    const needed = 4 - selected.length;
     const msg = needed === 4 ? '4'
               : needed > 0 ? `${needed} more`
               : '4';
@@ -85,31 +70,17 @@ class PlayerList extends React.PureComponent<AllProps> {
 
   }
 
-  render() {
-    return <Base>
-      {this.renderHelpText()}
-      <div className={styles.playerListContainer}>
-        <PlayerAdd/>
-        {this.props.players && this.props.players.map(player =>
-          <PlayerComponent key={player.id}
-                           player={player}
-                           onClick={() => this.handlePlayerSelect(player)}
-                           selected={this.props.selected.find(p => p.id === player.id) !== undefined}/>)}
-      </div>;
-    </Base>;
-  }
+  return <Base>
+    {renderHelpText()}
+    <div className={styles.playerListContainer}>
+      <PlayerAdd/>
+      {players && players.map(player =>
+        <PlayerComponent key={player.id}
+                         player={player}
+                         onClick={() => handlePlayerSelect(player)}
+                         selected={selected.find(p => p.id === player.id) !== undefined}/>)}
+    </div>;
+  </Base>;
 }
 
-const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  playersInit: playersInit(dispatch),
-  playersSelected: playersSelected(dispatch),
-})
-
-const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({
-  players: state.players,
-  selected: state.selectedPlayers,
-});
-
-const connected = connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);
-
-export default withRouter(connected);
+export default withRouter(PlayerList);

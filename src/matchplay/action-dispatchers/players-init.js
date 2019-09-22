@@ -11,9 +11,9 @@ const handler = async (action, dispatch) => {
   const tx = db.transaction('player', 'readonly');
   const os = tx.store;
   let cursor = await os.openCursor();
-  const players = [];
+  const players = new Map();
   while (cursor) {
-    players.push({...cursor.value, id: cursor.key});
+    players.set(cursor.key, cursor.value);
     cursor = await cursor.continue();
   }
   dispatch({

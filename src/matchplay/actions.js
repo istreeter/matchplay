@@ -9,17 +9,18 @@ import type {State} from './state';
 
 type PlayersFetched = {|
   type: 'PLAYERS_FETCHED',
-  players: $ReadOnlyArray<Player>,
+  players: $ReadOnlyMap<number, Player>,
 |};
 
 type PlayersAdded = {|
   type: 'PLAYERS_ADDED',
   player: Player,
+  playerId: number,
 |};
 
 type PlayersSelected = {|
   type: 'PLAYERS_SELECTED',
-  players: $ReadOnlyArray<Player>,
+  players: $ReadOnlyMap<number, Player>,
 |};
 
 // Instructions to middleware:
@@ -42,7 +43,7 @@ type PlayersInit = {|
 
 type GameAdd = {|
   type: 'GAMES_ADD',
-  players: $ReadOnlyArray<Player>,
+  players: $ReadOnlyMap<number, Player>,
   history: RouterHistory,
 |};
 

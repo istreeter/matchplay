@@ -17,8 +17,8 @@ const handler = async (action) => {
   const game : Game = {
     date: new Date(),
     winner: undefined,
-    scores: action.players.map(player => ({
-      player: player.id,
+    scores: Array.from(action.players.keys(), playerId =>({
+      player: playerId,
       points: [],
     })),
   };
@@ -36,7 +36,7 @@ const middleware : Middleware<State, Action, Dispatch> =
     return next(action);
   }
 
-export default (dispatch: Dispatch) => (players: $ReadOnlyArray<Player>, history: RouterHistory) => {
+export default (dispatch: Dispatch) => (players: $ReadOnlyMap<number, Player>, history: RouterHistory) => {
   dispatch({
     type: 'MIDDLEWARE_ADD',
     name: 'GAMES_ADD',

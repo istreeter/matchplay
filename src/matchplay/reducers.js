@@ -7,7 +7,7 @@ import type {State} from './state';
 
 export const defaultState : State = {
   players: undefined,
-  selectedPlayers: [],
+  selectedPlayers: new Map(),
 };
 
 export const reducer : Reducer<State, Action> =
@@ -18,14 +18,17 @@ export const reducer : Reducer<State, Action> =
       case 'PLAYERS_FETCHED':
         return {
             ...state,
-            players: [...action.players].sort((a, b) => b.precedence - a.precedence),
+            // TODO: dbIndex to sort
+            players: new Map([...action.players.entries()].sort(([aId, a], [bId, b]) => b.precedence - a.precedence)),
           };
 
       case 'PLAYERS_ADDED':
-        const players = state.players === undefined ? [action.player] : [action.player, ...state.players];
+        const players = state.players === undefined
+                    ? [[action.playerId, action.player]]
+                    : [[action.playerId, action.player], ...state.players];
         return {
           ...state,
-          players
+          players: new Map(players),
           };
 
       case 'PLAYERS_SELECTED':

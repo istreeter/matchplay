@@ -28,7 +28,7 @@ const renderPlayer = (player: Player, index: number) =>
 
 const PlayerList = (props: Props) => {
 
-  const selected = useSelector<State, $ReadOnlyArray<Player>>(state => state.selectedPlayers);
+  const selected = useSelector<State, $ReadOnlyMap<number, Player>>(state => state.selectedPlayers);
   const dispatch : Dispatch = useDispatch();
   const [submitted, setSubmitted] = useState(false);
 
@@ -40,9 +40,9 @@ const PlayerList = (props: Props) => {
     }
   }
 
-  return selected.length === 4 ? <Base>
+  return selected.size === 4 ? <Base>
       <div className={styles.playerListContainer}>
-        {selected.map(renderPlayer)}
+        {Array.from(selected.values(), renderPlayer)}
       </div>
       <div className={styles.startGame}>
         <button onClick={handleSubmit}>Start game</button>

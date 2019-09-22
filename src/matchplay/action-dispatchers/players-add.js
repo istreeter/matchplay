@@ -4,11 +4,11 @@ import type {Middleware} from 'redux';
 
 import type {Action, Dispatch} from 'matchplay/actions';
 import type {State} from 'matchplay/state';
-import type {DbPlayer} from 'matchplay/model';
+import type {Player} from 'matchplay/model';
 import dbPromise from 'matchplay/db';
 
 const handler = async (action, dispatch) => {
-  const player : DbPlayer = {
+  const player : Player = {
     name: action.name,
     color: action.color,
     played: 0,
@@ -20,12 +20,13 @@ const handler = async (action, dispatch) => {
   const tx = db.transaction('player', 'readwrite');
   const os = tx.store;
 
-  const id = await os.add(player);
+  const playerId = await os.add(player);
   await tx.complete;
 
   dispatch({
     type: 'PLAYERS_ADDED',
-    player: {...player, id},
+    player,
+    playerId,
   })
 
 }

@@ -43,24 +43,23 @@ const PlayerComponent = ({selected, player, onClick}: PlayerProps) => {
 const PlayerList = ({history}: Props) => {
 
   const dispatch : Dispatch = useDispatch();
-  const selected = useSelector<State, $ReadOnlyArray<Player>>(state => state.selectedPlayers);
-  const players = useSelector<State, $ReadOnlyArray<Player> | void>(state => state.players);
+  const selected = useSelector<State, $ReadOnlyMap<number, Player>>(state => state.selectedPlayers);
+  const players = useSelector<State, $ReadOnlyMap<number, Player> | void>(state => state.players);
 
   useEffect(() => playersInit(dispatch)());
 
-  const handlePlayerSelect = (p: Player) => {
-    const newSelected =
-      selected.find(p2 => p2.id === p.id) === undefined
-      ? [p, ...selected]
-      : selected.filter(p2 => p.id !== p2.id);
+  const handlePlayerSelect = (id: number, player: Player) => {
+    const newSelected = selected.has(id)
+          ? new Map([...selected.entries()].filter(([id2, p]) => id2 !== id))
+          : new Map([[id, player], ...selected.entries()]);
     playersSelected(dispatch)(newSelected);
-    if (newSelected.length === 4) {
+    if (newSelected.size === 4) {
       history.push("/game/start");
     }
   };
 
   const renderHelpText = () => {
-    const needed = 4 - selected.length;
+    const needed = 4 - selected.size;
     const msg = needed === 4 ? '4'
               : needed > 0 ? `${needed} more`
               : '4';
@@ -74,11 +73,11 @@ const PlayerList = ({history}: Props) => {
     {renderHelpText()}
     <div className={styles.playerListContainer}>
       <PlayerAdd/>
-      {players && players.map(player =>
-        <PlayerComponent key={player.id}
+      {players && Array.from(players, ([playerId, player]) =>
+        <PlayerComponent key={playerId}
                          player={player}
-                         onClick={() => handlePlayerSelect(player)}
-                         selected={selected.find(p => p.id === player.id) !== undefined}/>)}
+                         onClick={() => handlePlayerSelect(playerId, player)}
+                         selected={selected.has(playerId)}/>)}
     </div>;
   </Base>;
 }

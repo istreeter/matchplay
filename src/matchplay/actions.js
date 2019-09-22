@@ -1,5 +1,6 @@
 // @flow
 import type {Dispatch as ReduxDispatch, Middleware} from 'redux';
+import type {RouterHistory} from 'react-router-dom';
 
 import type {Player} from './model';
 import type {State} from './state';
@@ -40,7 +41,9 @@ type PlayersInit = {|
 |};
 
 type GameAdd = {|
-  type: 'GAME_ADD',
+  type: 'GAMES_ADD',
+  players: $ReadOnlyArray<Player>,
+  history: RouterHistory,
 |};
 
 export type Action =

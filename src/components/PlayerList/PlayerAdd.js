@@ -33,16 +33,12 @@ const PlayerAdd = ({playersAdd}: AllProps) => {
   const [showInput, setShowInput] = useState(false);
   const [color, setColor] = useState(randomColor());
 
-  const handleCloseInput = () => {
-    setColor(randomColor());
-    setShowInput(false);
-  }
-
   const handleSubmit = () => {
     if (name !== "") {
       playersAdd(name, color);
       setShowInput(false);
       setName("");
+      setColor(randomColor());
     }
   }
 
@@ -62,7 +58,6 @@ const PlayerAdd = ({playersAdd}: AllProps) => {
                placeholder="Name"
                onKeyUp={handleKeyUp}
                className={styles.nameInput}
-               onBlur={handleCloseInput}
                autoFocus/>
         <button onClick={handleSubmit}>OK</button>
       </div>
@@ -77,7 +72,7 @@ const PlayerAdd = ({playersAdd}: AllProps) => {
 
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  playersAdd: (name, color) => playersAdd(dispatch),
+  playersAdd: playersAdd(dispatch),
 })
 
 const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({

@@ -1,14 +1,16 @@
 // @flow
-//
+
 import React from 'react';
 import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
-import {Link, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
+import {withRouter, type RouterHistory} from 'react-router';
 
 import type {Player} from 'matchplay/model';
 import type {State} from 'matchplay/state';
 import type {Dispatch} from 'matchplay/actions';
+import gamesAdd from 'matchplay/action-dispatchers/games-add';
 import Base from 'components/Base';
 import styles from './GameStart.module.css';
 
@@ -17,10 +19,11 @@ type StateProps = {|
 |}
 
 type OwnProps = {|
+  history: RouterHistory,
 |}
 
 type DispatchProps = {|
-  xxx: void,
+  gamesAdd: ($ReadOnlyArray<Player>, RouterHistory) => mixed,
 |}
 
 type AllProps = {|
@@ -37,23 +40,26 @@ const renderPlayer = (player: Player, index: number) =>
   </div>
 
 
+// TODO: disable button after submitted because handler is async
 const PlayerList = (props: AllProps) =>
   props.selected.length === 4 ? <Base>
       <div className={styles.playerListContainer}>
         {props.selected.map(renderPlayer)}
       </div>
       <div className={styles.startGame}>
-        <Link to="/">Start game</Link>
+        <button onClick={() => props.gamesAdd(props.selected, props.history)}>Start game</button>
       </div>
   </Base>
   : <Redirect to="/players"/>;
 
 const mapDispatchToProps = (dispatch : Dispatch) : DispatchProps => ({
-  xxx: undefined,
+  gamesAdd: gamesAdd(dispatch),
 })
 
 const mapStateToProps = (state : State, ownProps : OwnProps) : StateProps => ({
   selected: state.selectedPlayers,
 });
 
-export default connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);
+const connected = connect<AllProps, OwnProps, StateProps, DispatchProps, State, Dispatch>(mapStateToProps, mapDispatchToProps)(PlayerList);
+
+export default withRouter(connected);

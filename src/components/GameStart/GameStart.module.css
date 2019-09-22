@@ -13,9 +13,12 @@
   text-align: center;
 }
 
-.startGame > a {
+.startGame > button {
   display: inline-block;
   color: var(--theme1-color);
+  background-color: transparent;
+  font: inherit;
+  cursor: pointer;
   border: 1px solid var(--theme1-color);
   text-decoration: none;
   padding: 10px 20px;

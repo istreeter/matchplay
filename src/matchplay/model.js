@@ -17,5 +17,5 @@ export type PlayerScorecard = {|
 export type Game = {|
     +date: Date,
     +winner?: number,
-    +scores : PlayerScorecard,
+    +scores : $ReadOnlyArray<PlayerScorecard>,
   |};

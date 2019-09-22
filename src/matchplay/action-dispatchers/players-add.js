@@ -1,7 +1,6 @@
 // @flow
 
 import type {Middleware} from 'redux';
-import { openDB } from 'idb';
 
 import type {Action, Dispatch} from 'matchplay/actions';
 import type {State} from 'matchplay/state';
@@ -22,7 +21,7 @@ const middleware : Middleware<State, Action, Dispatch> =
       dbPromise.then(db => {
         const tx = db.transaction('player', 'readwrite');
         const os = tx.objectStore('player');
-        os.add(player)
+        os.add(player);
         return tx.complete
       }).then(result =>
         store.dispatch({

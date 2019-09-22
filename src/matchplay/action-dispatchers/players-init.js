@@ -1,7 +1,6 @@
 // @flow
 
 import type {Middleware} from 'redux';
-import { openDB } from 'idb';
 
 import type {Action, Dispatch} from 'matchplay/actions';
 import type {State} from 'matchplay/state';
@@ -27,7 +26,7 @@ const middleware : Middleware<State, Action, Dispatch> =
 export default (dispatch: Dispatch) => () => {
   dispatch({
     type: 'MIDDLEWARE_ADD',
-    name: 'players',
+    name: 'PLAYERS_INIT',
     middleware,
   });
   dispatch({type: 'PLAYERS_INIT'});

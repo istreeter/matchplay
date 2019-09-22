@@ -1,8 +1,19 @@
 @import '~styles/global.css';
 
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 5px auto;
+  padding: 0 5px;
+  max-width: 600px;
+}
+
+.container > * + * {
+  margin-top: 10px;
+}
+
 .row {
   display: flex;
-  margin: 5px;
 }
 
 .row > * {
@@ -37,10 +48,6 @@
   color: white;
   background-color: var(--theme3-color);
   font-weight: 700;
-}
-
-.scorecard > *+* {
-  margin-top: 5px;
 }
 
 .help {

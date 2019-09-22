@@ -42,10 +42,12 @@ const GameComponent = ({match, history}: Props) => {
     <div className={styles.playerCard}>{player.name}</div>
 
   return <Base>
+    <div className={styles.container}>
       <div>Game {id} Scorecard</div>
       {winner && <div>Winner: {winner.name}</div>}
       <div className={styles.row}>{Array.from(game.players.values(), renderPlayer)}</div>
-      <div className={styles.scorecard}>
+
+      <>
         {game.holes.map((scores, index) =>
           <React.Fragment key={index}>
           <div>Hole {index+1}</div>
@@ -53,17 +55,16 @@ const GameComponent = ({match, history}: Props) => {
                 players={game.players}
                 scores={scores}/>
           </React.Fragment>)}
-      </div>
+      </>
 
 
-      <div className={styles.scorecard}>
-        <div>Hole {game.holes.length +1}</div>
-        {game.holes.length < 18 && <ActiveHole
-                gameId={id}
-                holeIndex={game.holes.length}
-                players={game.players} />}
-      </div>
-    </Base>
+      <div>Hole {game.holes.length +1}</div>
+      {game.holes.length < 18 && <ActiveHole
+              gameId={id}
+              holeIndex={game.holes.length}
+              players={game.players} />}
+    </div>
+  </Base>
 }
 
 export default withRouter(GameComponent);

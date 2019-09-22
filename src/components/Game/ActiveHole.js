@@ -46,7 +46,7 @@ export default ({players, holeIndex, gameId}: Props) => {
       return <div className={styles.help}>select score for each player</div>
     }
     const msg = holeIndex === 17 ? "Submit scorecard" : "Next hole";
-    return <button onClick={handleSubmit}>{msg}</button>
+    return <div className={styles.help}><button onClick={handleSubmit}>{msg}</button></div>
   }
 
   return<>

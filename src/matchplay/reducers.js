@@ -46,11 +46,14 @@ export const reducer : Reducer<State, Action> =
           ...state,
           game: action.game,
           gameId: action.gameId,
+          selectedPlayers: action.players,
         }
 
       case 'GAME_UPDATED':
         return state.game && state.gameId === action.gameId
-           ? { ...state, game: action.game }
+           ? { ...state,
+               game: action.game,
+               selectedPlayers: action.players ? action.players : state.selectedPlayers}
            : state;
 
       default:

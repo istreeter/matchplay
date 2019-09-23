@@ -17,7 +17,7 @@ const handler = async (action) => {
   const game : Game = {
     date: new Date(),
     winner: undefined,
-    players: action.players,
+    players: [...action.players.keys()],
     holes: [],
   };
 

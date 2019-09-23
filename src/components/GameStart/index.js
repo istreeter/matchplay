@@ -44,7 +44,7 @@ const PlayerList = (props: Props) => {
         {Array.from(selected.values(), renderPlayer)}
       </div>
       <div className={styles.startGame}>
-        <button onClick={handleSubmit}>Start game</button>
+        <button onClick={handleSubmit} autoFocus>Start game</button>
         <Link to="/players/">Change players</Link>
       </div>
   </Base>

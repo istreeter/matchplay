@@ -33,12 +33,13 @@ const GameComponent = ({match, history}: Props) => {
   }, [id, dispatch, history]);
 
   const game = useSelector((state: State) => state.game);
+  const players = useSelector((state: State) => state.selectedPlayers);
 
   if (!game) {
     return null;
   }
 
-  const winner = game.winner && game.players.get(game.winner);
+  const winner = game.winner && players.get(game.winner);
 
   const renderPlayer = (player, index) =>
     <div key={index}>
@@ -53,14 +54,14 @@ const GameComponent = ({match, history}: Props) => {
     <div className={styles.container}>
       <h2>Game {id} Scorecard</h2>
       {winner && <div>Winner: {winner.name}</div>}
-      <div className={styles.row}>{Array.from(game.players.values(), renderPlayer)}</div>
+      <div className={styles.row}>{Array.from(players.values(), renderPlayer)}</div>
 
       <>
         {game.holes.map((scores, index) =>
           <React.Fragment key={index}>
           <div>Hole {index+1}</div>
           <Hole gameId={id}
-                players={game.players}
+                players={players}
                 scores={scores}/>
           </React.Fragment>)}
       </>
@@ -70,7 +71,7 @@ const GameComponent = ({match, history}: Props) => {
       {game.holes.length < 18 && <ActiveHole
               gameId={id}
               holeIndex={game.holes.length}
-              players={game.players} />}
+              players={players} />}
     </div>
   </Base>
 }

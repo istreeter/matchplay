@@ -27,6 +27,7 @@ type GameFetched = {|
   type: 'GAME_FETCHED',
   game: Game,
   gameId: number,
+  players: $ReadOnlyMap<number, Player>,
 |};
 
 // (Typed like this to keep the reducer very simple)
@@ -34,6 +35,7 @@ type GameUpdated = {|
   type: 'GAME_UPDATED',
   game: Game,
   gameId: number,
+  players?: $ReadOnlyMap<number, Player>,
 |};
 
 // Instructions to middleware:

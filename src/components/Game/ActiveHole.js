@@ -18,7 +18,7 @@ export default ({players, holeIndex, gameId}: Props) => {
 
   const [scores, setScores] = useState<$ReadOnlyMap<number,number>>(new Map());
 
-  useEffect(() => setScores(new Map()), [players]);
+  useEffect(() => setScores(new Map()), [players, holeIndex, gameId]);
   const dispatch : Dispatch = useDispatch();
 
   const handleClick = (playerId: number, score: number) => {
@@ -46,7 +46,7 @@ export default ({players, holeIndex, gameId}: Props) => {
       return <div className={styles.help}>select score for each player</div>
     }
     const msg = holeIndex === 17 ? "Submit scorecard" : "Next hole";
-    return <div className={styles.help}><button onClick={handleSubmit}>{msg}</button></div>
+    return <div className={styles.help}><button onClick={handleSubmit} autoFocus>{msg}</button></div>
   }
 
   return<>

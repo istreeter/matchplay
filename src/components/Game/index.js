@@ -42,24 +42,24 @@ const GameComponent = ({match, history}: Props) => {
   const winner = game.winner && players.get(game.winner);
 
   const renderPlayer = (player, index) =>
-    <div key={index}>
-      Player {index + 1}
+    <div key={index} className={styles.column}>
+      <div>Player {index + 1}</div>
       <div className={styles.playerCard} style={{borderColor: player.color}}>
         <FontAwesomeIcon className={styles.icon} style={{color: player.color}} icon={faUser} size="2x"/>
       </div>
-      {player.name}
+      <div>{player.name}</div>
     </div>
 
   return <Base>
     <div className={styles.container}>
       <h2>Game {id} Scorecard</h2>
-      {winner && <div>Winner: {winner.name}</div>}
+      {winner && <div className={styles.winner}>Winner: {winner.name}</div>}
       <div className={styles.row}>{Array.from(players.values(), renderPlayer)}</div>
 
       <>
         {game.holes.map((scores, index) =>
           <React.Fragment key={index}>
-          <div>Hole {index+1}</div>
+          <div className={styles.holeTitle}>Hole {index+1}</div>
           <Hole gameId={id}
                 players={players}
                 scores={scores}/>
@@ -67,11 +67,14 @@ const GameComponent = ({match, history}: Props) => {
       </>
 
 
-      <div>Hole {game.holes.length +1}</div>
-      {game.holes.length < 18 && <ActiveHole
+      {game.holes.length < 18 ? <>
+        <div className={styles.holeTitle}>Hole {game.holes.length +1}</div>
+        <ActiveHole
               gameId={id}
               holeIndex={game.holes.length}
-              players={players} />}
+              players={players} />
+        </> :
+        <div className={styles.help}>Game over. Find me in the club house.</div>}
     </div>
   </Base>
 }

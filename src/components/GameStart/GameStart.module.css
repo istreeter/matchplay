@@ -1,5 +1,3 @@
-@import '~styles/global.css';
-
 .playerListContainer {
   composes: playerListContainer from '../../styles/player-grid.css';
 }
@@ -8,28 +6,36 @@
   composes: playerGridItem from '../../styles/player-grid.css';
 }
 
+.icon {
+  font-size: 4em;
+}
+
+@media (max-height: 640px) {
+  .icon {
+    font-size: 3em;
+  }
+}
+
+.ready {
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 1em 0.5em;
+  color: var(--theme4-color);
+}
+
 .startGame {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  margin-top: 1em;
 }
 
-.startGame > * {
-  margin-top: 10px;
+.button {
+  composes: button from "../../styles/global.css";
+  composes: buttonTheme1 from "../../styles/global.css";
 }
 
-.startGame > button {
-  display: inline-block;
-  color: var(--theme1-color);
-  background-color: transparent;
-  font: inherit;
-  cursor: pointer;
-  border: 1px solid var(--theme1-color);
-  padding: 10px 20px;
-}
-
-.startGame > a {
-  text-decoration: none;
-  padding: 10px 20px;
+.changePlayers {
+  composes: button from "../../styles/global.css";
   color: var(--theme4-color);
 }

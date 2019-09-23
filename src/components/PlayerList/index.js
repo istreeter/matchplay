@@ -83,7 +83,7 @@ const PlayerList = ({history}: Props) => {
                          player={player}
                          onClick={() => handlePlayerSelect(playerId, player)}
                          selected={selected.has(playerId)}/>)}
-    </div>;
+    </div>
   </Base>;
 }
 

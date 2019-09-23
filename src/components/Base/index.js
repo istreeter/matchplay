@@ -12,10 +12,10 @@ type Props = {
   children?: React.Node,
 }
 
-export default (props: Props ) => {
+export default ({children}: Props) => {
   const selected = useSelector((state: State) => state.selectedPlayers);
 
-  return <div className={styles.container}>
+  return <>
     <header className={styles.header}>
       <Link to="/">
         <img className={styles.logo} src={logo} alt="logo" />
@@ -25,8 +25,6 @@ export default (props: Props ) => {
         New Game
       </Link>
     </header>
-    <div className={styles.content}>
-      {props.children}
-    </div>
-  </div>;
+    {children}
+  </>;
 }

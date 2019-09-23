@@ -1,10 +1,7 @@
-@import '~styles/global.css';
-
-.container {
-  --header-height: 80px;
-}
 
 .header {
+  font-size: 1.4rem;
+  --header-height: 4em;;
   height: var(--header-height);
   background-color: var(--theme1-color);
   display: flex;
@@ -12,13 +9,7 @@
 
 .link {
   color: white;
-  font-size: 20px;
-  text-decoration: none;
-
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
+  composes: button from "../../styles/global.css";
 }
 
 .content {
@@ -27,5 +18,5 @@
 .logo {
   height: var(--header-height);
   width: var(--header-height);
-  padding: 10px;
+  padding: 0.5em;
 }

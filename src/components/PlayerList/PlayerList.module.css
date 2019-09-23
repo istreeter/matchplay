@@ -1,5 +1,3 @@
-@import '~styles/global.css';
-
 .playerListContainer {
   composes: playerListContainer from '../../styles/player-grid.css';
 }
@@ -20,6 +18,7 @@
 
 .icon, .iconAdd {
   font-size: 4em;
+  color: var(--theme2-color);
 }
 
 @media (max-height: 640px) {
@@ -28,27 +27,11 @@
   }
 }
 
-
 .iconAdd {
   color: var(--theme4-color);
 }
-
-.unselected {
-}
-
 .unselected .icon {
   opacity: 0.2;
-}
-
-.selected {
-}
-
-.nameInput {
-  font: inherit;
-  color: inherit;
-  padding: 3px;
-  text-align: center;
-  width: 100%;
 }
 
 .inputGroup {
@@ -56,13 +39,32 @@
 }
 
 .helpText {
+  font-size: 1.2rem;
   text-align: center;
-  padding: 30px 5px;
-  font-size: 1.2em;
+  margin: 1em 0.5em;
   color: var(--theme4-color);
 }
 
+.nameInput:focus {
+  outline: none;
+}
+
+.inputGroup > button,
+.nameInput {
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  border: 1px solid var(--theme1-color);
+  padding: 0.25rem;
+}
 
 .inputGroup > button {
-  cursor: pointer;
+  background-color: #eeeeee;
+  margin-left: -1px;
 }
+
+.nameInput {
+  text-align: center;
+  width: 100%;
+}
+

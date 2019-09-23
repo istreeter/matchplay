@@ -20,7 +20,7 @@ type Props = {|
 const renderPlayer = (player: Player, index: number) =>
   <div className={styles.playerGridItem} style={{borderColor: player.color}} key={index}>
     <div>Player {index + 1}</div>
-    <FontAwesomeIcon className={styles.icon} style={{color: player.color}} icon={faUser} size="4x"/>
+    <FontAwesomeIcon className={styles.icon} style={{color: player.color}} icon={faUser}/>
     <div>{player.name}</div>
   </div>
 
@@ -40,12 +40,15 @@ const PlayerList = (props: Props) => {
   }
 
   return selected.size === 4 ? <Base>
+      <div className={styles.ready}>Ready?</div>
       <div className={styles.playerListContainer}>
         {Array.from(selected.values(), renderPlayer)}
       </div>
       <div className={styles.startGame}>
-        <button onClick={handleSubmit} autoFocus>Start game</button>
-        <Link to="/players/">Change players</Link>
+        <Link className={styles.changePlayers}to="/players/">Change players</Link>
+        <button onClick={handleSubmit}
+                className={styles.button}
+                autoFocus>Start game</button>
       </div>
   </Base>
   : <Redirect to="/players"/>;

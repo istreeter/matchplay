@@ -27,7 +27,7 @@ export const reducer : Reducer<State, Action> =
                     ? [[action.playerId, action.player]]
                     : [[action.playerId, action.player], ...state.players];
         const selectedPlayers = state.selectedPlayers.size < 4
-            ? new Map([[action.playerId, action.player], ...state.selectedPlayers])
+            ? new Map([...state.selectedPlayers, [action.playerId, action.player]])
             : state.selectedPlayers;
         return {
           ...state,

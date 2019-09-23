@@ -1,6 +1,6 @@
 // @flow
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
@@ -46,6 +46,14 @@ const PlayerList = ({history}: Props) => {
   const selected = useSelector<State, $ReadOnlyMap<number, Player>>(state => state.selectedPlayers);
   const players = useSelector<State, $ReadOnlyMap<number, Player> | void>(state => state.players);
 
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (!isFirstRender.current && selected.size === 4) {
+      history.push("/game/start/");
+    }
+    isFirstRender.current = false;
+  }, [selected, history]);
+
   useEffect(() => playersInit(dispatch)(), [dispatch]);
 
   const handlePlayerSelect = (id: number, player: Player) => {
@@ -53,9 +61,6 @@ const PlayerList = ({history}: Props) => {
           ? new Map([...selected.entries()].filter(([id2, p]) => id2 !== id))
           : new Map([...selected.entries(), [id, player]]);
     playersSelected(dispatch)(newSelected);
-    if (newSelected.size === 4) {
-      history.push("/game/start/");
-    }
   };
 
   const renderHelpText = () => {

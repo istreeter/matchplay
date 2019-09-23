@@ -34,7 +34,7 @@ const PlayerComponent = ({selected, player, onClick}: PlayerProps) => {
     return <div className={`${styles.playerGridItem} ${selectedClass}`}
                 style={style}
                 onClick={onClick}>
-      <FontAwesomeIcon className={styles.icon} style={iconStyle} icon={faUser} size="4x"/>
+      <FontAwesomeIcon className={styles.icon} style={iconStyle} icon={faUser}/>
       <div>{player.name} </div>
       <div>won {player.won}, played {player.played}</div>
     </div>

@@ -39,7 +39,7 @@ export default () => {
 
   if (showInput) {
     return <div className={styles.playerGridItem} style={{borderColor: color}}>
-      <FontAwesomeIcon className={styles.icon} style={{color: color}} icon={faUser} size="4x"/>
+      <FontAwesomeIcon className={styles.icon} style={{color: color}} icon={faUser}/>
       <div>New player</div>
       <div className={styles.inputGroup}>
         <input value={name}
@@ -54,7 +54,7 @@ export default () => {
   }
 
   return <div className={styles.linkAdd} onClick={() => setShowInput(true)}>
-      <FontAwesomeIcon className={styles.iconAdd} icon={faPlus} size="4x"/>
+      <FontAwesomeIcon className={styles.iconAdd} icon={faPlus}/>
       <div>New player</div>
     </div>;
 }

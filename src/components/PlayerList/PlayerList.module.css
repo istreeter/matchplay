@@ -18,6 +18,17 @@
   text-decoration: none;
 }
 
+.icon, .iconAdd {
+  font-size: 4em;
+}
+
+@media (max-height: 640px) {
+  .icon, .iconAdd {
+    font-size: 3em;
+  }
+}
+
+
 .iconAdd {
   color: var(--theme4-color);
 }

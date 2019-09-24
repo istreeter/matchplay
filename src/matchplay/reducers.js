@@ -9,6 +9,7 @@ export const defaultState : State = {
   players: undefined,
   selectedPlayers: new Map(),
   game: undefined,
+  archive: undefined,
 };
 
 export const reducer : Reducer<State, Action> =
@@ -56,6 +57,12 @@ export const reducer : Reducer<State, Action> =
                game: action.game,
                selectedPlayers: action.players ? action.players : state.selectedPlayers}
            : state;
+
+      case 'ARCHIVE_FETCHED':
+        return {
+            ...state,
+            archive: action.games,
+          };
 
       default:
         return state;

@@ -38,6 +38,12 @@ type GameUpdated = {|
   players?: $ReadOnlyMap<number, Player>,
 |};
 
+type ArchiveFetched = {|
+  type: 'ARCHIVE_FETCHED',
+  games: $ReadOnlyMap<number, Game>,
+|};
+
+
 // Instructions to middleware:
 
 type MiddlewareAdd = {|
@@ -75,6 +81,10 @@ type HolesAdd = {|
   scores: $ReadOnlyMap<number, number>, // map from playerId to score
 |};
 
+type ArchiveInit = {|
+  type: 'ARCHIVE_INIT',
+|};
+
 export type Action =
   | MiddlewareAdd
   | PlayersFetched
@@ -87,5 +97,7 @@ export type Action =
   | GameFetched
   | HolesAdd
   | GameUpdated
+  | ArchiveInit
+  | ArchiveFetched
 
 export type Dispatch = ReduxDispatch<Action>;

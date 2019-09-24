@@ -7,4 +7,5 @@ export type State = {|
   +selectedPlayers: $ReadOnlyMap<number, Player>,
   +gameId?: number,
   +game?: Game,
+  +archive?: $ReadOnlyMap<number, Game>,
 |};

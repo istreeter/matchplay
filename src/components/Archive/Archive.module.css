@@ -1,0 +1,23 @@
+
+.archiveListContainer {
+  composes: playerListContainer from '../../styles/player-grid.css';
+  margin-top: 1em;
+}
+
+.archiveGridItem {
+  composes: playerGridItem from '../../styles/player-grid.css';
+  text-decoration: none;
+  border-color: var(--theme4-color)
+}
+
+.inProgress, .gameTitle {
+  color: var(--theme4-color);
+}
+
+.gameTitle {
+  font-size: 1.2em;
+}
+
+.players {
+  margin-top: 0.5em;
+}

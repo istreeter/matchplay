@@ -97,6 +97,7 @@
   border: none;
   font: inherit;
   float: right;
-  padding: none;
+  padding: 0;
   cursor: pointer;
+  font-size: 0.9em;
 }

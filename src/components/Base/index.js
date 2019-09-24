@@ -24,6 +24,9 @@ export default ({children}: Props) => {
             to={selected.size === 4 ? "/game/start/" : "/players/"}>
         New Game
       </Link>
+      <Link className={styles.link} to="/archive/">
+        Archive
+      </Link>
     </header>
     {children}
   </>;

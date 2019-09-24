@@ -18,3 +18,15 @@ export const randomColor = () => {
     const [r, g, b] = rgb(i%6);
     return "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
 }
+
+// Input ranks keyed by playerId, for a single hole.
+// Output points keyed by playerId
+export const ranksToPoints = (ranks: $ReadOnlyMap<number, number>) : $ReadOnlyMap<number, number> => {
+  const result = new Map();
+  for (const [playerId, rank] of ranks) {
+    const betterThan = [...ranks.values()].filter((rank2 : number) => rank <= rank2).length - 1;
+    const equalTo = [...ranks.values()].filter(rank2 => rank === rank2).length - 1;
+    result.set(playerId, betterThan - equalTo * 0.5);
+  }
+  return result;
+}

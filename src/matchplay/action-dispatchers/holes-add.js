@@ -5,20 +5,24 @@ import type {Middleware} from 'redux';
 import type {Action, Dispatch} from 'matchplay/actions';
 import type {State} from 'matchplay/state';
 import type {Game, Player} from 'matchplay/model';
+import {ranksToPoints} from 'matchplay/utils';
 import dbPromise from 'matchplay/db';
 
 const calculateTotals = (players: $ReadOnlyArray<number>,
-                         holes: $ReadOnlyArray<$ReadOnlyMap<number, number>>)
-       : $ReadOnlyMap<number, number> =>
-  new Map (
+                         ranks: $ReadOnlyArray<$ReadOnlyMap<number, number>>)
+       : $ReadOnlyMap<number, number> => {
+  const points = ranks.map(ranksToPoints);
+
+  return new Map (
     players.map(playerId => {
       const summed =
-        holes.reduce((acc, hole) => {
+        points.reduce((acc, hole) => {
           return acc + (hole.get(playerId) || 0)
         }, 0);
       return [playerId, summed];
     })
   );
+}
 
 const handler = async (action, dispatch) => {
   const db = await dbPromise;

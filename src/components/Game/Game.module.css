@@ -51,6 +51,10 @@
   margin-top: -1px;
 }
 
+.scoreSelect > div {
+  margin-top: 10px;
+}
+
 .scoreSelect > button:focus {
   outline: none;
 }

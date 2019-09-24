@@ -91,7 +91,7 @@ const GameComponent = ({match, history}: Props) => {
         </>}
 
       <>
-        {game.holes.map((scores, index) =>
+        {game.holes.map((ranks, index) =>
           <React.Fragment key={index}>
           <div className={styles.holeTitle}>Hole {index+1}
             {!gameOver && (holeIndex !== index) &&
@@ -105,10 +105,10 @@ const GameComponent = ({match, history}: Props) => {
                 gameId={id}
                 holeIndex={holeIndex}
                 players={players}
-                initScores={scores}/>
+                initRanks={ranks}/>
             : <Hole gameId={id}
                     players={players}
-                    scores={scores}/>}
+                    ranks={ranks}/>}
           </React.Fragment>)}
       </>
 

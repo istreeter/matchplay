@@ -1,16 +1,19 @@
 // @flow
-import React from 'react';
+import React, {useMemo} from 'react';
 
 import type {Player} from 'matchplay/model';
 import styles from "./Game.module.css";
+import {ranksToPoints} from 'matchplay/utils';
 
 type Props = {|
   gameId: number,
   players: $ReadOnlyMap<number, Player>,
-  scores: $ReadOnlyMap<number, number>
+  ranks: $ReadOnlyMap<number, number>
 |}
 
-export default ({scores, players, gameId}: Props) => {
+export default ({ranks, players, gameId}: Props) => {
+
+  const scores = useMemo(() => ranksToPoints(ranks), [ranks]);
 
   const renderPlayerScore = ([playerId, player], index) => {
     const score = scores.get(playerId);

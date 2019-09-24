@@ -1,34 +1,39 @@
 // @flow
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {useDispatch} from 'react-redux';
 
 import type {Player} from 'matchplay/model';
 import type {Dispatch} from 'matchplay/actions';
 import holesAdd from 'matchplay/action-dispatchers/holes-add';
+import {ranksToPoints} from 'matchplay/utils';
 import styles from "./Game.module.css";
 
 type Props = {|
   gameId: number,
   holeIndex: number,
   players: $ReadOnlyMap<number, Player>,
-  initScores?: $ReadOnlyMap<number, number>,
+  initRanks?: $ReadOnlyMap<number, number>,
 |}
 
-export default ({players, holeIndex, gameId, initScores}: Props) => {
+const labels = ["st", "nd", "rd", "th"];
 
-  const [scores, setScores] = useState<$ReadOnlyMap<number,number>>(initScores || new Map());
+export default ({players, holeIndex, gameId, initRanks}: Props) => {
 
-  useEffect(() => setScores(initScores || new Map()), [players, holeIndex, gameId, initScores]);
+  const [ranks, setRanks] = useState<$ReadOnlyMap<number,number>>(initRanks || new Map());
+  const scores = useMemo(() => ranksToPoints(ranks), [ranks]);
+
+  useEffect(() => setRanks(initRanks || new Map()), [players, holeIndex, gameId, initRanks]);
   const dispatch : Dispatch = useDispatch();
 
-  const handleClick = (playerId: number, score: number) => {
-    const cloned = new Map(scores);
-    cloned.set(playerId, score);
-    setScores(cloned)
+  const handleClick = (playerId: number, rank: number) => {
+    const cloned = new Map(ranks);
+    cloned.set(playerId, rank);
+    setRanks(cloned)
   };
 
   const renderPlayerScore = ([playerId, player], index) => {
+    const rank = ranks.get(playerId);
     const score = scores.get(playerId);
 
     return <div key={index} className={styles.scoreSelect}>
@@ -36,16 +41,17 @@ export default ({players, holeIndex, gameId, initScores}: Props) => {
         <button key={i}
                 autoFocus={index === 0 && i === 0}
                 onClick={() => handleClick(playerId, i+1)}
-                className={score === i+1 ? styles.selected : undefined}>{i+1}</button>)}
+                className={rank === i+1 ? styles.selected : undefined}>{i+1}<sup>{labels[i]}</sup></button>)}
+      {scores.size === 4 && <div>{score} pts</div>}
     </div>;
   }
 
   const handleSubmit = () =>
-    holesAdd(dispatch)(gameId, holeIndex, scores);
+    holesAdd(dispatch)(gameId, holeIndex, ranks);
 
   const renderSubmit = () => {
-    if (scores.size !== players.size) {
-      return <div className={styles.help}>Select score for each player</div>
+    if (ranks.size !== players.size) {
+      return <div className={styles.help}>Select rank of each player</div>
     }
     const msg = holeIndex === 17 ? "Submit scorecard" : "Next hole";
     return <div className={styles.help}>

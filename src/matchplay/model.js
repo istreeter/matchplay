@@ -11,6 +11,6 @@ export type Player = {|
 export type Game = {|
     +date: Date,
     +players: $ReadOnlyArray<number>,
-    +holes: $ReadOnlyArray<$ReadOnlyMap<number, number>>, // map from playerId to points
+    +holes: $ReadOnlyArray<$ReadOnlyMap<number, number>>, // map from playerId to rank
     +totals: $ReadOnlyMap<number, number>, // map from playerId to points
   |};

@@ -19,6 +19,14 @@ type Props = {|
   history: RouterHistory
 |};
 
+const calculateWinners = (players, scores) => {
+  return  [...players.entries()].filter(([playerId, player]) => {
+      const score = scores.get(playerId) || 0;
+      return [...scores.values()].every(score2 => score2 <= score);
+    }).map(([playerId, player]) => player.name)
+      .join(" and ");
+}
+
 const GameComponent = ({match, history}: Props) => {
   const id = parseInt(match.params['id']);
 
@@ -39,7 +47,7 @@ const GameComponent = ({match, history}: Props) => {
     return null;
   }
 
-  const winner = game.winner && players.get(game.winner);
+  const winners = game.holes.length >= 18 ? calculateWinners(players, game.totals) : undefined;
 
   const renderPlayer = (player, index) =>
     <div key={index} className={styles.column}>
@@ -50,11 +58,30 @@ const GameComponent = ({match, history}: Props) => {
       <div className={styles.playerName}>{player.name}</div>
     </div>
 
+  const renderPlayerTotalScore = ([playerId], index) =>
+    <div key={index}>{game.totals.get(playerId) || 0}</div>
+
   return <Base>
     <div className={styles.container}>
       <h2>Game {id} Scorecard</h2>
-      {winner && <div className={styles.winner}>Winner: {winner.name}</div>}
+      {winners && <div className={styles.winner}>Winner: {winners}</div>}
       <div className={styles.row}>{Array.from(players.values(), renderPlayer)}</div>
+      
+      {game.holes.length > 0 && <>
+        <div className={styles.holeTitle}>Total points</div>
+        <div className={styles.row}>
+          {Array.from(players, renderPlayerTotalScore)}
+        </div>
+      </>}
+
+      {game.holes.length < 18 ? <>
+        <div className={styles.holeTitle}>Hole {game.holes.length +1}</div>
+        <ActiveHole
+              gameId={id}
+              holeIndex={game.holes.length}
+              players={players} />
+        </> :
+        <div className={styles.help}>Game over. Find me in the club house.</div>}
 
       <>
         {game.holes.map((scores, index) =>
@@ -67,14 +94,6 @@ const GameComponent = ({match, history}: Props) => {
       </>
 
 
-      {game.holes.length < 18 ? <>
-        <div className={styles.holeTitle}>Hole {game.holes.length +1}</div>
-        <ActiveHole
-              gameId={id}
-              holeIndex={game.holes.length}
-              players={players} />
-        </> :
-        <div className={styles.help}>Game over. Find me in the club house.</div>}
     </div>
   </Base>
 }

@@ -7,19 +7,18 @@ import type {State} from 'matchplay/state';
 import type {Game, Player} from 'matchplay/model';
 import dbPromise from 'matchplay/db';
 
-const calculateWinner = (holes: $ReadOnlyArray<$ReadOnlyMap<number, number>>) : number | void => {
-  const summed =
-    holes.reduce((acc, hole) => {
-      for (const [playerId, score] of hole) {
-        const oldScore = acc.get(playerId);
-        acc.set(playerId, oldScore ? score + oldScore : score);
-      }
-      return acc;
-    }, new Map());
-  const sorted = [...summed]
-    .sort(([aId, aScore], [bId, bScore]) => bScore - aScore);
-  return sorted[0] && sorted[0][0];
-}
+const calculateTotals = (players: $ReadOnlyArray<number>,
+                         holes: $ReadOnlyArray<$ReadOnlyMap<number, number>>)
+       : $ReadOnlyMap<number, number> =>
+  new Map (
+    players.map(playerId => {
+      const summed =
+        holes.reduce((acc, hole) => {
+          return acc + (hole.get(playerId) || 0)
+        }, 0);
+      return [playerId, summed];
+    })
+  );
 
 const handler = async (action, dispatch) => {
   const db = await dbPromise;
@@ -29,10 +28,10 @@ const handler = async (action, dispatch) => {
 
   const oldGame : Game | void = await gameOs.get(action.gameId);
 
-  if (oldGame !== undefined && oldGame.holes.length === action.holeIndex) {
+  if (oldGame !== undefined && oldGame.holes.length < 18) {
     const holes = [...oldGame.holes, action.scores];
-    const winner = holes.length === 18 ? calculateWinner(holes) : undefined;
-    const game : Game = {...oldGame, holes, winner};
+    const totals = calculateTotals(oldGame.players, holes);
+    const game : Game = {...oldGame, holes, totals};
     await gameOs.put(game, action.gameId);
 
     const updatePlayers = async() => {
@@ -42,10 +41,14 @@ const handler = async (action, dispatch) => {
         if (oldPlayer === undefined) {
           continue;
         }
+
+        const score = totals.get(playerId) || 0;
+        const isWinner = [...totals.values()].every(score2 => score2 <= score);
+
         const player = {
           ...oldPlayer,
           played: oldPlayer.played + 1,
-          won: playerId === winner ? oldPlayer.won + 1 : oldPlayer.won,
+          won: isWinner ? oldPlayer.won + 1 : oldPlayer.won,
         }
 
         await playerOs.put(player, playerId);

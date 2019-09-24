@@ -16,9 +16,9 @@ const handler = async (action) => {
 
   const game : Game = {
     date: new Date(),
-    winner: undefined,
     players: [...action.players.keys()],
     holes: [],
+    totals: new Map(Array.from(action.players.keys(), id => [id, 0])),
   };
 
   const id = await os.add(game);

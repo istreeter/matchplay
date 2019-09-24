@@ -34,6 +34,7 @@ export default ({players, holeIndex, gameId, initScores}: Props) => {
     return <div key={index} className={styles.scoreSelect}>
       {Array.from(Array(4).keys(), i =>
         <button key={i}
+                autoFocus={index === 0 && i === 0}
                 onClick={() => handleClick(playerId, i+1)}
                 className={score === i+1 ? styles.selected : undefined}>{i+1}</button>)}
     </div>;

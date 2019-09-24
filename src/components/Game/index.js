@@ -80,28 +80,35 @@ const GameComponent = ({match, history}: Props) => {
         </div>
       </>}
 
-      {!gameOver ? <>
+      {gameOver &&  <div className={styles.help}>Game over. Find me in the club house.</div>}
+
+      {!gameOver && holeIndex === game.holes.length && <>
         <div className={styles.holeTitle}>Hole {holeIndex +1}</div>
         <ActiveHole
               gameId={id}
               holeIndex={holeIndex}
-              players={players}
-              initScores={game.holes[holeIndex]}/>
-        </> :
-        <div className={styles.help}>Game over. Find me in the club house.</div>}
+              players={players}/>
+        </>}
 
       <>
         {game.holes.map((scores, index) =>
           <React.Fragment key={index}>
           <div className={styles.holeTitle}>Hole {index+1}
-            {!gameOver && <button className={styles.editButton}
-                      onClick={() => setHoleIndex(index)}>
-                <FontAwesomeIcon icon={faEdit}/>
-              </button>}
+            {!gameOver && (holeIndex !== index) &&
+                <button className={styles.editButton}
+                        onClick={() => setHoleIndex(index)}>
+                  <FontAwesomeIcon icon={faEdit}/>
+                </button>}
           </div>
-          <Hole gameId={id}
+          {(!gameOver && holeIndex === index) ?
+            <ActiveHole
+                gameId={id}
+                holeIndex={holeIndex}
                 players={players}
-                scores={scores}/>
+                initScores={scores}/>
+            : <Hole gameId={id}
+                    players={players}
+                    scores={scores}/>}
           </React.Fragment>)}
       </>
 

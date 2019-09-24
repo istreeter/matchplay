@@ -1,10 +1,11 @@
 // @flow
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {withRouter, type Match, type RouterHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
+import {faEdit} from '@fortawesome/free-regular-svg-icons';
 
 import type {Dispatch} from 'matchplay/actions';
 import type {State} from 'matchplay/state';
@@ -43,11 +44,16 @@ const GameComponent = ({match, history}: Props) => {
   const game = useSelector((state: State) => state.game);
   const players = useSelector((state: State) => state.selectedPlayers);
 
+  const [holeIndex, setHoleIndex] = useState(game ? game.holes.length : 0);
+  useEffect(() => setHoleIndex(game ? game.holes.length : 0), [game]);
+
   if (!game) {
     return null;
   }
 
-  const winners = game.holes.length >= 18 ? calculateWinners(players, game.totals) : undefined;
+  const gameOver = game.holes.length >= 18;
+
+  const winners = gameOver ? calculateWinners(players, game.totals) : undefined;
 
   const renderPlayer = (player, index) =>
     <div key={index} className={styles.column}>
@@ -74,19 +80,25 @@ const GameComponent = ({match, history}: Props) => {
         </div>
       </>}
 
-      {game.holes.length < 18 ? <>
-        <div className={styles.holeTitle}>Hole {game.holes.length +1}</div>
+      {!gameOver ? <>
+        <div className={styles.holeTitle}>Hole {holeIndex +1}</div>
         <ActiveHole
               gameId={id}
-              holeIndex={game.holes.length}
-              players={players} />
+              holeIndex={holeIndex}
+              players={players}
+              initScores={game.holes[holeIndex]}/>
         </> :
         <div className={styles.help}>Game over. Find me in the club house.</div>}
 
       <>
         {game.holes.map((scores, index) =>
           <React.Fragment key={index}>
-          <div className={styles.holeTitle}>Hole {index+1}</div>
+          <div className={styles.holeTitle}>Hole {index+1}
+            {!gameOver && <button className={styles.editButton}
+                      onClick={() => setHoleIndex(index)}>
+                <FontAwesomeIcon icon={faEdit}/>
+              </button>}
+          </div>
           <Hole gameId={id}
                 players={players}
                 scores={scores}/>

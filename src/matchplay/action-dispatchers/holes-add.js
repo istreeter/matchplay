@@ -28,8 +28,9 @@ const handler = async (action, dispatch) => {
 
   const oldGame : Game | void = await gameOs.get(action.gameId);
 
-  if (oldGame !== undefined && oldGame.holes.length < 18) {
-    const holes = [...oldGame.holes, action.scores];
+  if (oldGame !== undefined && oldGame.holes.length < 18 && action.holeIndex <= oldGame.holes.length) {
+    const holes = [...oldGame.holes];
+    holes[action.holeIndex] = action.scores;
     const totals = calculateTotals(oldGame.players, holes);
     const game : Game = {...oldGame, holes, totals};
     await gameOs.put(game, action.gameId);

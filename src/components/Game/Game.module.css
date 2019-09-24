@@ -91,3 +91,12 @@
 .playerName {
   word-wrap: break-word;
 }
+
+.editButton {
+  background: none;
+  border: none;
+  font: inherit;
+  float: right;
+  padding: none;
+  cursor: pointer;
+}

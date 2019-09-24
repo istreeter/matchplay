@@ -14,6 +14,7 @@ export const defaultState : State = {
 export const reducer : Reducer<State, Action> =
   (previousState? : State, action : Action) => {
     const state = previousState === undefined ? defaultState : previousState;
+    console.log(action);
 
     switch (action.type) {
       case 'PLAYERS_FETCHED':

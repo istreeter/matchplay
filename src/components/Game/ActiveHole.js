@@ -12,13 +12,14 @@ type Props = {|
   gameId: number,
   holeIndex: number,
   players: $ReadOnlyMap<number, Player>,
+  initScores?: $ReadOnlyMap<number, number>,
 |}
 
-export default ({players, holeIndex, gameId}: Props) => {
+export default ({players, holeIndex, gameId, initScores}: Props) => {
 
-  const [scores, setScores] = useState<$ReadOnlyMap<number,number>>(new Map());
+  const [scores, setScores] = useState<$ReadOnlyMap<number,number>>(initScores || new Map());
 
-  useEffect(() => setScores(new Map()), [players, holeIndex, gameId]);
+  useEffect(() => setScores(initScores || new Map()), [players, holeIndex, gameId, initScores]);
   const dispatch : Dispatch = useDispatch();
 
   const handleClick = (playerId: number, score: number) => {

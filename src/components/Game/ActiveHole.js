@@ -43,7 +43,7 @@ export default ({players, holeIndex, gameId}: Props) => {
 
   const renderSubmit = () => {
     if (scores.size !== players.size) {
-      return <div className={styles.help}>select score for each player</div>
+      return <div className={styles.help}>Select score for each player</div>
     }
     const msg = holeIndex === 17 ? "Submit scorecard" : "Next hole";
     return <div className={styles.help}>

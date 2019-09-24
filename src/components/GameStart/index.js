@@ -21,7 +21,7 @@ const renderPlayer = (player: Player, index: number) =>
   <div className={styles.playerGridItem} style={{borderColor: player.color}} key={index}>
     <div>Player {index + 1}</div>
     <FontAwesomeIcon className={styles.icon} style={{color: player.color}} icon={faUser}/>
-    <div>{player.name}</div>
+    <div className={styles.playerName}>{player.name} </div>
   </div>
 
 

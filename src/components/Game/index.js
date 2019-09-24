@@ -47,7 +47,7 @@ const GameComponent = ({match, history}: Props) => {
       <div className={styles.playerCard} style={{borderColor: player.color}}>
         <FontAwesomeIcon className={styles.icon} style={{color: player.color}} icon={faUser} size="2x"/>
       </div>
-      <div>{player.name}</div>
+      <div className={styles.playerName}>{player.name}</div>
     </div>
 
   return <Base>

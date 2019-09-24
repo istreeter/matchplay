@@ -68,3 +68,6 @@
   width: 100%;
 }
 
+.playerName {
+  word-break: break-word;
+}

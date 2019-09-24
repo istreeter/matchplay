@@ -27,7 +27,6 @@
 
 .column {
   width: 1px;
-  overflow: auto;
 }
 
 .column > * + * {
@@ -87,4 +86,8 @@
   composes: button from "../../styles/global.css";
   composes: buttonTheme1 from "../../styles/global.css";
   margin: 0 auto;
+}
+
+.playerName {
+  word-wrap: break-word;
 }

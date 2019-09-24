@@ -35,7 +35,7 @@ const PlayerComponent = ({selected, player, onClick}: PlayerProps) => {
                 style={style}
                 onClick={onClick}>
       <FontAwesomeIcon className={styles.icon} style={iconStyle} icon={faUser}/>
-      <div>{player.name} </div>
+      <div className={styles.playerName}>{player.name} </div>
       <div>won {player.won}, played {player.played}</div>
     </div>
 }

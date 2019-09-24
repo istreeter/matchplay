@@ -39,3 +39,7 @@
   composes: button from "../../styles/global.css";
   color: var(--theme4-color);
 }
+
+.playerName {
+  word-break: break-word;
+}
